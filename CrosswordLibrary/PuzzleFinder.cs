@@ -20,6 +20,7 @@ namespace CrosswordLibrary
         public int PuzzelsTested { get; set; }
         public int DuplicatesFound { get; set; }
         public int InvalidFound { get; set; }
+        public List<Puzzle> ValidPuzzels { get; set; } = new List<Puzzle>();
 
         public PuzzleFinder(ColumnSet validColumns, int searchLimit, bool print = false)
         {
@@ -30,6 +31,7 @@ namespace CrosswordLibrary
             {
                 ColumnHashtable.Add(item.ToString(), item);
             }
+            PuzzleChecker.ColumnHashtable = ColumnHashtable;
             PuzzleSize = validColumns.ColumnSize;
 
             if (PuzzleSize % 2 == 0)
@@ -41,179 +43,237 @@ namespace CrosswordLibrary
             //Console.WriteLine("");
 
 
-            Search();
+            ValidPuzzels.Add(GetRootTable());
+            Search(searchLimit);
 
-            Console.WriteLine($"Found {PuzzleHashtable.Count} puzzles. Size {PuzzleSize}. Checked puzzels {PuzzelsTested}. SearchLimit {SearchLimit}. Elapsed {(DateTime.Now - StartTime).TotalSeconds} seconds");
-            //PrintPuzzels(print);
-        }
+            Console.WriteLine($"Found {ValidPuzzels.Count} puzzles. Size {PuzzleSize}. Checked puzzels {PuzzelsTested}. SearchLimit {SearchLimit}. Elapsed {(DateTime.Now - StartTime).TotalSeconds} seconds");
 
-        private void PrintPuzzels(bool print)
-        {
-            var puzzelList = new List<Puzzle>();
-            int i = 0;
+
+            int printPause = 0;
             if (print)
             {
-                var puzzles = PuzzleHashtable.Values;
-                foreach (Puzzle item in puzzles)
+                foreach (var puzzle in ValidPuzzels)
                 {
-                    puzzelList.Add(item);
+                    if (printPause % 10 == 0) { Console.ReadKey(); }
+                    PuzzleChecker.Print(puzzle);
+                    printPause++;
                 }
+            }
+        }
 
-                Console.ReadKey();
-                //foreach (var item in puzzelList.OrderByDescending(x => x.ToString()))
-                var orderedList = puzzelList.OrderByDescending(x => x.Order);
-                foreach (var item in orderedList)
+        //private void PrintPuzzels(bool print)
+        //{
+        //    var puzzelList = new List<PuzzleChecker>();
+        //    int i = 0;
+        //    if (print)
+        //    {
+        //        var puzzles = PuzzleHashtable.Values;
+        //        foreach (PuzzleChecker item in puzzles)
+        //        {
+        //            puzzelList.Add(item);
+        //        }
+
+        //        Console.ReadKey();
+        //        //foreach (var item in puzzelList.OrderByDescending(x => x.ToString()))
+        //        var orderedList = puzzelList.OrderByDescending(x => x.Order);
+        //        foreach (var item in orderedList)
+        //        {
+
+        //            item.Print();
+        //            i++;
+        //            if (i % 10 == 0)
+        //            {
+        //                Console.ReadKey();
+        //            }
+        //        }
+        //    }
+        //}
+
+        private void Search(int limit, int order = 0)
+        {
+
+            var orderPuzzles = ValidPuzzels.Where(x => x.Order == order).ToList();
+
+            foreach (var orderPuzzle in orderPuzzles)
+            {
+                List<Puzzle> childCandidates = GetChildCandidates(orderPuzzle, order);
+
+                foreach (var candidate in childCandidates)
                 {
-
-                    item.Print();
-                    i++;
-                    if (i % 10 == 0)
+                    if (PuzzleChecker.IsValidNewPuzzle(candidate))
                     {
-                        Console.ReadKey();
+                        ValidPuzzels.Add(candidate);
                     }
                 }
             }
+
+
+            if (limit == order)
+            {
+                Console.WriteLine("Done searching");
+                return;
+            }
+            else
+            {
+                Search(limit, order + 1);
+            }
         }
 
-        private void Search()
+        private List<Puzzle> GetChildCandidates(Puzzle orderPuzzle, int order)
         {
-            List<Puzzle> currentValidPuzzels = new List<Puzzle>();
-            List<Puzzle> newValidPuzzels = new List<Puzzle>();
+            var results = new List<Puzzle>();
+            var options = new string[orderPuzzle.Columns.Length][];
 
-            var rootTable = GetRootTable();
-
-            if (rootTable.IsValid())
+            for (int i = 0; i < orderPuzzle.Columns.Length; i++)
             {
-                //PuzzleHashtable.Add(rootTable.ToString(), rootTable);
-                PuzzleHashtable.Add(rootTable.ToString(), rootTable.ToString());
-                currentValidPuzzels.Add(rootTable);
-            }
+                var currentCol = (Column)ColumnHashtable[orderPuzzle.Columns[i]];
 
-            Console.WriteLine("");
-            //Console.WriteLine($"Searching {SearchLimit} times");
-            for (int i = 0; i < SearchLimit; i++)
-            {
-                Console.WriteLine($"Search Loop {i} - {currentValidPuzzels.Count} Puzzles");
-                foreach (var parentPuzzel in currentValidPuzzels)
+                var possibleCols = new List<string>();
+                possibleCols.Add(currentCol.ToString()); //Current column is always an option
+                if (currentCol.Order == order) //Only check current order columns
                 {
-                    //Console.WriteLine($"Checking {parentPuzzel}");
 
-                    List<Puzzle> childPuzzels = FindValidChildPuzzles(parentPuzzel, parentPuzzel.DefiningColumns.Length, 0, i);
-                    foreach (var child in childPuzzels)
+                    var children = currentCol.Children;
+
+                    foreach (var child in children)
                     {
-                        if (!PuzzleHashtable.Contains(child.ToString()))
+                        var childCol = (Column)ColumnHashtable[child];
+
+
+                        if ((i <= 2 && childCol.ValidLeftColumn)
+                            || (i > 2 && i < orderPuzzle.Columns.Length - 1)
+                           )
                         {
-                            //PuzzleHashtable.Add(child.ToString(), child);
-                            PuzzleHashtable.Add(child.ToString(), child.ToString());
-                            newValidPuzzels.Add(child);
+                            possibleCols.Add(child);
                         }
-                        else
+                        else if (i == orderPuzzle.Columns.Length - 1 && childCol.CanBeCenterColumn())
                         {
-                            DuplicatesFound++;
+                            //The symetric versio might not be valid so, check that it is
+                            if (ColumnHashtable.ContainsKey(childCol.ToStringSymetric()))
+                            {
+                                possibleCols.Add(child);
+                            }
                         }
                     }
                 }
-
-                Console.WriteLine($"Found {PuzzleHashtable.Count.ToString().PadLeft(10, ' ')} puzzles. Checked puzzels {PuzzelsTested}. Invalid puzzels {InvalidFound}. Duplicate {DuplicatesFound}. Size {PuzzleSize}. Search Depth {i}. {(DateTime.Now - StartTime).TotalSeconds} seconds");
-
-                currentValidPuzzels = newValidPuzzels;
-                newValidPuzzels = new List<Puzzle>();
+                options[i] = possibleCols.ToArray();
             }
+
+            var combinations = Combinator.FindCombinations(orderPuzzle.Columns, options);
+
+            if (combinations.Count == 0)
+            {
+                return results;
+            }
+
+            foreach (var combo in combinations)
+            {
+                var newPuzzle = orderPuzzle;
+                newPuzzle.Columns = combo;
+                newPuzzle.Order++;
+                results.Add(newPuzzle);
+            }
+
+            return results;
         }
 
-        private List<Puzzle> FindValidChildPuzzles(Puzzle parentPuzzel, int totalCols, int thisCol, int depth)
-        {
-            //Console.WriteLine($"GetChildren for puzzle {parentPuzzel} Col {thisCol}.");
-            var validChildren = new List<Puzzle>();
+        //private List<PuzzleChecker> FindValidChildPuzzles(PuzzleChecker parentPuzzel, int totalCols, int thisCol, int depth)
+        //{
+        //    //Console.WriteLine($"GetChildren for puzzle {parentPuzzel} Col {thisCol}.");
+        //    var validChildren = new List<PuzzleChecker>();
 
-            if (parentPuzzel.DefiningColumns[thisCol].Order != depth)
-            {
-                //Its the wrong loop to check this
-                return validChildren;
-            }
+        //    if (parentPuzzel.DefiningColumns[thisCol].Order != depth)
+        //    {
+        //        //Its the wrong loop to check this
+        //        return validChildren;
+        //    }
 
-            List<Column> childCols = GetChildren(parentPuzzel, thisCol, totalCols == thisCol + 1);
-            if (childCols.Count == 0)
-            {
-                return validChildren;
-            }
+        //    List<Column> childCols = GetChildren(parentPuzzel, thisCol, totalCols == thisCol + 1);
+        //    if (childCols.Count == 0)
+        //    {
+        //        return validChildren;
+        //    }
 
-            for (int i = 0; i <= childCols.Count; i++)
-            {
-                var newPuzzle = CopyPuzzle(parentPuzzel);
-                PuzzelsTested++;
-                //On the last loop, we don't alter the column
-                if (i > 0)
-                {
-                    //Console.WriteLine($"Checking col {thisCol}");
-                    newPuzzle.SetColumn(childCols[i - 1], thisCol);
-                }
-                else
-                {
-                    //Do nothing
-                    //Console.Write("");
-                }
-                if (!newPuzzle.IsValid())
-                {
-                    //Console.Write(" <== Invalid");
-                    InvalidFound++;
-                    break;
-                }
+        //    for (int i = 0; i <= childCols.Count; i++)
+        //    {
+        //        var newPuzzle = CopyPuzzle(parentPuzzel);
+        //        PuzzelsTested++;
+        //        //On the last loop, we don't alter the column
+        //        if (i > 0)
+        //        {
+        //            //Console.WriteLine($"Checking col {thisCol}");
+        //            newPuzzle.SetColumn(childCols[i - 1], thisCol);
+        //        }
+        //        else
+        //        {
+        //            //Do nothing
+        //            //Console.Write("");
+        //        }
+        //        if (!newPuzzle.IsValid())
+        //        {
+        //            //Console.Write(" <== Invalid");
+        //            InvalidFound++;
+        //            break;
+        //        }
 
 
-                if (!PuzzleHashtable.Contains(newPuzzle.ToString()))
-                {
-                    validChildren.Add(newPuzzle);
-                }
-                if (thisCol + 1 < totalCols)
-                {
-                    validChildren.AddRange(FindValidChildPuzzles(newPuzzle, totalCols, thisCol + 1, depth));
-                }
-            }
+        //        if (!PuzzleHashtable.Contains(newPuzzle.ToString()))
+        //        {
+        //            validChildren.Add(newPuzzle);
+        //        }
+        //        if (thisCol + 1 < totalCols)
+        //        {
+        //            validChildren.AddRange(FindValidChildPuzzles(newPuzzle, totalCols, thisCol + 1, depth));
+        //        }
+        //    }
 
-            return validChildren;
-        }
+        //    return validChildren;
+        //}
 
-        private Puzzle CopyPuzzle(Puzzle old)
-        {
-            var puzzle = new Puzzle(old.Size, old.ColumnHashtable);
-            for (int i = 0; i < old.DefiningColumns.Length; i++)
-            {
-                puzzle.SetColumn(old.DefiningColumns[i], i);
-            }
-            return puzzle;
-        }
+        //private PuzzleChecker CopyPuzzle(PuzzleChecker old)
+        //{
+        //    var puzzle = new PuzzleChecker(old.Size, old.ColumnHashtable);
+        //    for (int i = 0; i < old.DefiningColumns.Length; i++)
+        //    {
+        //        puzzle.SetColumn(old.DefiningColumns[i], i);
+        //    }
+        //    return puzzle;
+        //}
 
-        private List<Column> GetChildren(Puzzle parentPuzzel, int thisCol, bool median)
-        {
-            //Console.WriteLine($"GetChildren for Col {thisCol}. Median {median}");
+        //private List<Column> GetChildren(PuzzleChecker parentPuzzel, int thisCol, bool median)
+        //{
+        //    //Console.WriteLine($"GetChildren for Col {thisCol}. Median {median}");
 
-            //if Not Median column
-            var childCols = new List<Column>();
-            var childStrings = parentPuzzel.DefiningColumns[thisCol].Children;
-            foreach (var childString in childStrings)
-            {
-                var col = (Column)ColumnHashtable[childString];
-                if (col.IsSymetric || !median)
-                {
-                    childCols.Add(col);
-                }
-            }
+        //    //if Not Median column
+        //    var childCols = new List<Column>();
+        //    var childStrings = parentPuzzel.DefiningColumns[thisCol].Children;
+        //    foreach (var childString in childStrings)
+        //    {
+        //        var col = (Column)ColumnHashtable[childString];
+        //        if (col.IsSymetric || !median)
+        //        {
+        //            childCols.Add(col);
+        //        }
+        //    }
 
-            return childCols;
-        }
+        //    return childCols;
+        //}
 
         private Puzzle GetRootTable()
         {
-            var rootColumn = ValidColumns.GetColumnsByOrder(0).First();
-            var rootPuzzle = new Puzzle(PuzzleSize, ColumnHashtable);
+            var rootColumn = ValidColumns.GetColumnsByOrder(0).First().ToString();
 
-            for (int i = 0; i < rootPuzzle.DefiningColumns.Length; i++)
+            Puzzle puzzle = new Puzzle(PuzzleSize);
+
+            for (int i = 0; i < puzzle.Columns.Length; i++)
             {
-                rootPuzzle.SetColumn(rootColumn, i);
+                puzzle.Columns[i] = rootColumn;
             }
 
-            return rootPuzzle;
+            puzzle.Order = 0;
+            puzzle.WordCount = PuzzleSize * 2;
+
+            return puzzle;
         }
     }
 }

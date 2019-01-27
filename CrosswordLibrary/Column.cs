@@ -136,7 +136,7 @@ namespace CrosswordLibrary
                              $"{Parent ?? new string(' ', Cells.Length)} " +
                              $"{(ChangedCell() == -1 ? "  " : ChangedCell().ToString("00"))} " +
                              $"{(Children.Count > 0 ? Children.Count.ToString("00") : "  ")} " +
-                             $" {IsSymetric.ToString().PadLeft(5)}" +
+                             //$" {IsSymetric.ToString().PadLeft(5)}" +
                              $" {NoBlackEdges.ToString().PadLeft(5)}" +
                              $" {MaxBlackCellSequence().ToString().PadLeft(2)}" +
                              $" {ValidLeftColumn.ToString().PadLeft(5)}" +
@@ -160,7 +160,35 @@ namespace CrosswordLibrary
             return s;
         }
 
-        public bool IsSymetric => ToString() == new String(ToString().Reverse().ToArray());
+        /// <summary>
+        /// String from cells. Letters = 1, Black = 0
+        /// </summary>
+        public string ToStringSymetric()
+        {
+            string s = "";
+            for (int i = 0; i < Cells.Length; i++)
+            {
+                int j = (Cells.Length + 1 )/ 2 - i > 0 ? i : Cells.Length - 1 - i;
+                s += Cells[j] ? "1" : "0";
+            }
+            return s;
+        }
+
+        //public bool IsSymetric => ToString() == new String(ToString().Reverse().ToArray());
+
+        public bool CanBeCenterColumn()
+        {
+            int mid = (Cells.Length + 1) / 2;
+
+            for (int i = mid; i < Cells.Length; i++)
+            {
+                if(Cells[i] == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         public bool NoBlackEdges => Cells[0] == true && Cells.Last() == true;
 

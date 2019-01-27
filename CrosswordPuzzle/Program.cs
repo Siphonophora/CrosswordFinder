@@ -27,7 +27,7 @@ namespace CrosswordPuzzle
             //Total without cheaters 6
             var cf7 = new ColumnFinder(7);
             var cc7 = new ColumnClassifier(cf7.ValidColumns);
-            var pf7_7 = new PuzzleFinder(cf7.ValidColumns, 10, true);
+            var pf7_7 = new PuzzleFinder(cf7.ValidColumns,5, true);
 
             //var cf11 = new ColumnFinder(11);
             //var cc11 = new ColumnClassifier(cf11.ValidColumns);

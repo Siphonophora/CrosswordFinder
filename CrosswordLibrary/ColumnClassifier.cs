@@ -79,7 +79,7 @@ namespace CrosswordLibrary
 
             Console.WriteLine();
             Console.WriteLine($"Total Columns: {ValidColumns.Columns.Count}");
-            Console.WriteLine($"Symetric Columns: {ValidColumns.Columns.Where(x => x.IsSymetric).Count()}");
+            //Console.WriteLine($"Symetric Columns: {ValidColumns.Columns.Where(x => x.IsSymetric).Count()}");
             Console.WriteLine($"ValidLeftColumn Columns: {ValidColumns.Columns.Where(x => x.ValidLeftColumn).Count()}");
             Console.WriteLine();
             Console.WriteLine($"NoBlackEdges Columns: {ValidColumns.Columns.Where(x => x.NoBlackEdges).Count()}");
@@ -89,7 +89,7 @@ namespace CrosswordLibrary
             int moovlc = ValidColumns.Columns.Where(x => x.ValidLeftColumn).Max(y => y.Order);
             Console.WriteLine($"Max Order of ValidLeftColumns: {moovlc}");
             Console.WriteLine($"Total Columns: {ValidColumns.Columns.Where(x =>  x.Order <= moovlc).Count()}");
-            Console.WriteLine($"Symetric Columns: {ValidColumns.Columns.Where(x => x.IsSymetric && x.Order <= moovlc).Count()}");
+            //Console.WriteLine($"Symetric Columns: {ValidColumns.Columns.Where(x => x.IsSymetric && x.Order <= moovlc).Count()}");
             Console.WriteLine($"ValidLeftColumn Columns: {ValidColumns.Columns.Where(x => x.ValidLeftColumn && x.Order <= moovlc).Count()}");
 
         }
