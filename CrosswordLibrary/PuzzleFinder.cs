@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.IO;
 
 namespace CrosswordLibrary
 {
@@ -24,8 +25,17 @@ namespace CrosswordLibrary
         public List<Puzzle> ValidPuzzels { get; set; } = new List<Puzzle>();
         public long NumChecked { get; set; } = 0;
         public PuzzleChecker PuzzleChecker { get; set; }
+        public string SliceInfo { get; set; } = "";
 
-        public PuzzleFinder(ColumnSet validColumns, int searchLimit, bool print = false)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="validColumns"></param>
+        /// <param name="searchLimit"></param>
+        /// <param name="print"></param>
+        /// <param name="numOfSlices">This is how many columns deep we will 'slice' the solving into</param>
+        public PuzzleFinder(ColumnSet validColumns, int searchLimit, bool print = false, int numOfSlices = 0)
         {
 
             ValidColumns = validColumns;
@@ -53,15 +63,24 @@ namespace CrosswordLibrary
 
 
             ValidPuzzels.Add(GetRootTable());
-            Search(searchLimit);
+            if (numOfSlices == 0)
+            {
+                Search(searchLimit, 0, null);
+            }
+            else
+            {
+                var options = GetChildCandidateOptions(GetRootTable(), 0);
+                SearchSlices(searchLimit, options, numOfSlices, new int[numOfSlices]);
+            }
 
-            Console.WriteLine();
-            Console.WriteLine($"Found {ValidPuzzels.Count} puzzles. " +
-                $"Size {PuzzleSize}. " +
-                $"Checked puzzels {PuzzelsTested}. " +
-                $"SearchLimit {SearchLimit}. " +
-                $"Elapsed {(DateTime.Now - StartTime).TotalSeconds} seconds");
-            Console.WriteLine();
+            Console.WriteLine("-----------------------------RESULTS--------------------------------------------");
+            Console.WriteLine($" {NumChecked.ToString("N0")} checked. ");
+            Console.WriteLine($" Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0")} seconds");
+            Console.WriteLine($" Total Valid: {(TotalValidCount).ToString("N0")} puzzles of");
+            Console.WriteLine($" Total Invalid Row: {(PuzzleChecker.InvalidRowCount).ToString("N0")} ");
+            Console.WriteLine($" Total Cheater: {(PuzzleChecker.CheaterCount).ToString("N0")} ");
+            Console.WriteLine($" Total Not Continuous: {(PuzzleChecker.NotContiuousCount).ToString("N0")} ");
+            Console.WriteLine("---------------------------------------------------------------------------------");
 
             int printPause = 0;
             int printSkip = 10;
@@ -80,8 +99,26 @@ namespace CrosswordLibrary
             }
         }
 
+        private void SearchSlices(int searchLimit, string[][] options, int numOfSlices, int[] slices, int depth = 0)
+        {
+            for (int i = 0; i < options[depth].Length; i++)
+            {
+                slices[depth] = i;
+                if (numOfSlices > depth + 1)
+                {
+                    SearchSlices(searchLimit, options, numOfSlices, slices, depth + 1);
+                }
+                else
+                {
+                    SliceInfo = $"Slice = {string.Join(",", slices)}";
+                    ValidPuzzels = new List<Puzzle>();
+                    ValidPuzzels.Add(GetRootTable());
+                    Search(searchLimit, 0, slices);
+                }
+            }
+        }
 
-        private void Search(int limit, int order = 0)
+        private void Search(int limit, int order, int[] slices)
         {
 
             long startPuzzleCount = TotalValidCount;
@@ -93,15 +130,44 @@ namespace CrosswordLibrary
 
             if (orderPuzzles.Count == 0)
             {
-                Console.WriteLine("Done searching");
+                string s = $"{SliceInfo}" +
+                    $" Depth :{(order + 1).ToString("00")} of {SearchLimit}. " +
+                    $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
+                    $"Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')} seconds" +
+                    $" Total Valid: {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
+                    $" New Valid: {(TotalValidCount - startPuzzleCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
+                    $" Invalid Row: {(PuzzleChecker.InvalidRowCount - startInvalidRow).ToString("N0").PadLeft(pad, ' ')} " +
+                    $" Cheater: {(PuzzleChecker.CheaterCount - startCheater).ToString("N0").PadLeft(pad, ' ')} " +
+                    $" Not Continuous: {(PuzzleChecker.NotContiuousCount - startNotContinous).ToString("N0").PadLeft(pad, ' ')} ";
+
+                string outDir = $"C:\\\\Crossword\\{PuzzleSize}\\";
+                Directory.CreateDirectory(outDir);
+                File.AppendAllLines($"{outDir}Log.txt", new String[] { s });
+
                 return;
             }
 
-            ValidPuzzels.RemoveAll(x => x.Order < order); //Memory managemenet
+            ValidPuzzels.RemoveAll(x => x.Order != order); //Memory managemenet
 
             for (int i = 0; i < orderPuzzles.Count; i++)
             {
-                List<Puzzle> childCandidates = GetChildCandidates(orderPuzzles[i], order);
+                var options = GetChildCandidateOptions(orderPuzzles[i], order);
+
+                List<Puzzle> childCandidates = new List<Puzzle>();
+
+                var combinations = Combinator.FindCombinations(orderPuzzles[i].Columns, options, 0, true, slices);
+
+                if (combinations.Count > 0)
+                {
+                    foreach (var combo in combinations)
+                    {
+                        var newPuzzle = orderPuzzles[i];
+                        newPuzzle.Columns = combo;
+                        newPuzzle.Order++;
+                        childCandidates.Add(newPuzzle);
+                    }
+
+                }
 
                 for (int j = 0; j < childCandidates.Count; j++)
                 {
@@ -115,6 +181,8 @@ namespace CrosswordLibrary
                     if (NumChecked % 1000000 == 0)
                     {
                         Console.WriteLine(
+                            $"{SliceInfo}" +
+                            $" Depth :{(order + 1).ToString("00")} of {SearchLimit}. " +
                             $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
                             $"Working on {(j + 1).ToString("N0").PadLeft(pad, ' ')} of {childCandidates.Count.ToString("N0").PadLeft(pad, ' ')} children " +
                             $"of # {(i + 1).ToString("N0").PadLeft(pad, ' ')} of {orderPuzzles.Count.ToString("N0").PadLeft(pad, ' ')} puzzels " +
@@ -134,23 +202,24 @@ namespace CrosswordLibrary
             }
             else
             {
-                Console.WriteLine();
-                Console.WriteLine(
-                    $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
-                    $"Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')} seconds" +
-                    $" Total Valid: {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
-                    $" New Valid: {(TotalValidCount - startPuzzleCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
-                    $" Invalid Row: {(PuzzleChecker.InvalidRowCount - startInvalidRow).ToString("N0").PadLeft(pad, ' ')} " +
-                    $" Cheater: {(PuzzleChecker.CheaterCount - startCheater).ToString("N0").PadLeft(pad, ' ')} " +
-                    $" Not Continuous: {(PuzzleChecker.NotContiuousCount - startNotContinous).ToString("N0").PadLeft(pad, ' ')} " +
-                    $"Depth :{order + 1} of {SearchLimit}. ");
-                Console.WriteLine();
 
-                Search(limit, order + 1);
+                //Console.WriteLine(
+                //    $"{SliceInfo}" +
+                //    $" Depth :{(order + 1).ToString("00")} of {SearchLimit}. " +
+                //    $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
+                //    $"Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')} seconds" +
+                //    $" Total Valid: {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
+                //    $" New Valid: {(TotalValidCount - startPuzzleCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
+                //    $" Invalid Row: {(PuzzleChecker.InvalidRowCount - startInvalidRow).ToString("N0").PadLeft(pad, ' ')} " +
+                //    $" Cheater: {(PuzzleChecker.CheaterCount - startCheater).ToString("N0").PadLeft(pad, ' ')} " +
+                //    $" Not Continuous: {(PuzzleChecker.NotContiuousCount - startNotContinous).ToString("N0").PadLeft(pad, ' ')} "
+                //    );
+
+                Search(limit, order + 1, null);
             }
         }
 
-        private List<Puzzle> GetChildCandidates(Puzzle orderPuzzle, int order)
+        private string[][] GetChildCandidateOptions(Puzzle orderPuzzle, int order)
         {
             var results = new List<Puzzle>();
             var options = new string[orderPuzzle.Columns.Length][];
@@ -190,105 +259,11 @@ namespace CrosswordLibrary
                 options[i] = possibleCols.ToArray();
             }
 
-            var combinations = Combinator.FindCombinations(orderPuzzle.Columns, options);
+            return options;
 
-            if (combinations.Count == 0)
-            {
-                return results;
-            }
-
-            foreach (var combo in combinations)
-            {
-                var newPuzzle = orderPuzzle;
-                newPuzzle.Columns = combo;
-                newPuzzle.Order++;
-                results.Add(newPuzzle);
-            }
-
-            return results;
         }
 
-        //private List<PuzzleChecker> FindValidChildPuzzles(PuzzleChecker parentPuzzel, int totalCols, int thisCol, int depth)
-        //{
-        //    //Console.WriteLine($"GetChildren for puzzle {parentPuzzel} Col {thisCol}.");
-        //    var validChildren = new List<PuzzleChecker>();
 
-        //    if (parentPuzzel.DefiningColumns[thisCol].Order != depth)
-        //    {
-        //        //Its the wrong loop to check this
-        //        return validChildren;
-        //    }
-
-        //    List<Column> childCols = GetChildren(parentPuzzel, thisCol, totalCols == thisCol + 1);
-        //    if (childCols.Count == 0)
-        //    {
-        //        return validChildren;
-        //    }
-
-        //    for (int i = 0; i <= childCols.Count; i++)
-        //    {
-        //        var newPuzzle = CopyPuzzle(parentPuzzel);
-        //        PuzzelsTested++;
-        //        //On the last loop, we don't alter the column
-        //        if (i > 0)
-        //        {
-        //            //Console.WriteLine($"Checking col {thisCol}");
-        //            newPuzzle.SetColumn(childCols[i - 1], thisCol);
-        //        }
-        //        else
-        //        {
-        //            //Do nothing
-        //            //Console.Write("");
-        //        }
-        //        if (!newPuzzle.IsValid())
-        //        {
-        //            //Console.Write(" <== Invalid");
-        //            InvalidFound++;
-        //            break;
-        //        }
-
-
-        //        if (!PuzzleHashtable.Contains(newPuzzle.ToString()))
-        //        {
-        //            validChildren.Add(newPuzzle);
-        //        }
-        //        if (thisCol + 1 < totalCols)
-        //        {
-        //            validChildren.AddRange(FindValidChildPuzzles(newPuzzle, totalCols, thisCol + 1, depth));
-        //        }
-        //    }
-
-        //    return validChildren;
-        //}
-
-        //private PuzzleChecker CopyPuzzle(PuzzleChecker old)
-        //{
-        //    var puzzle = new PuzzleChecker(old.Size, old.ColumnHashtable);
-        //    for (int i = 0; i < old.DefiningColumns.Length; i++)
-        //    {
-        //        puzzle.SetColumn(old.DefiningColumns[i], i);
-        //    }
-        //    return puzzle;
-        //}
-
-        //private List<Column> GetChildren(PuzzleChecker parentPuzzel, int thisCol, bool median)
-        //{
-        //    //Console.WriteLine($"GetChildren for Col {thisCol}. Median {median}");
-
-        //    //if Not Median column
-        //    var childCols = new List<Column>();
-        //    var childStrings = parentPuzzel.DefiningColumns[thisCol].Children;
-        //    foreach (var childString in childStrings)
-        //    {
-        //        var col = (Column)ColumnHashtable[childString];
-        //        if (col.IsSymetric || !median)
-        //        {
-        //            childCols.Add(col);
-        //        }
-        //    }
-
-        //    return childCols;
-        //}
 
         private Puzzle GetRootTable()
         {

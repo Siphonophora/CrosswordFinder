@@ -205,6 +205,7 @@ namespace CrosswordLibrary
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(" ");
+            Console.WriteLine(" ");
 
         }
     }

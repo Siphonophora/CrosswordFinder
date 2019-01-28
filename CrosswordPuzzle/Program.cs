@@ -12,7 +12,7 @@ namespace CrosswordPuzzle
     {
         static void Main(string[] args)
         {
-            Console.WindowWidth = 250;
+            Console.WindowWidth = 300;
             Console.WindowHeight = 70;
             //var bits = new BitArray(4);
             //bool[] myBools = new bool[15] { false, true, true, true, true, false, false, false, false, true, true, true, true, true, true };
@@ -44,12 +44,38 @@ namespace CrosswordPuzzle
             //Actual Total found by other participant 4e10
             //Total possible without chetaers 1.5e12 ==  14^ 3 * 304 ^ 3 * 20 
 
-            var cf13 = new ColumnFinder(13);
-            var cc13 = new ColumnClassifier(cf13.ValidColumns);
-            var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true);
+            //var cf13 = new ColumnFinder(13);
+            //var cc13 = new ColumnClassifier(cf13.ValidColumns);
 
+            //var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true);
+            //-----------------------------RESULTS--------------------------------------------
+            //49,917,850 checked.
+            //Elapsed: 306.3 seconds
+            //Total Valid: 9,456,336 puzzles of
+            //Total Invalid Row: 36,776,796
+            //Total Cheater: 3,684,718
+            //Total Not Continuous: 0
+            //----------------------------------------------------------------------------------
 
+            //var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true, 2);
+            //-----------------------------RESULTS--------------------------------------------
+            // 49,917,850 checked.
+            // Elapsed: 324.3 seconds
+            // Total Valid: 9,456,336 puzzles of
+            // Total Invalid Row: 36,776,796
+            // Total Cheater: 3,684,718
+            // Total Not Continuous: 0
+            //-------------------------------------------------------------------------------- -
 
+            //var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true, 4);
+            //-----------------------------RESULTS--------------------------------------------
+            //49,917,850 checked.
+            //Elapsed: 297.1 seconds
+            //Total Valid: 9,456,336 puzzles of
+            //Total Invalid Row: 36,776,796
+            //Total Cheater: 3,684,718
+            //Total Not Continuous: 0
+            //-------------------------------------------------------------------------------- -
 
 
 
@@ -59,9 +85,9 @@ namespace CrosswordPuzzle
             //About 2e17
             //Total in 'enumerable set' 26^3 * 141^4 * 9 
             //About 6e13
-            //var cf15 = new ColumnFinder(15);
-            //var cc15 = new ColumnClassifier(cf15.ValidColumns);
-            //var pf15 = new PuzzleFinder(cf15.ValidColumns, 4, true);
+            var cf15 = new ColumnFinder(15);
+            var cc15 = new ColumnClassifier(cf15.ValidColumns);
+            var pf15 = new PuzzleFinder(cf15.ValidColumns, 20, true, 6);
 
             //Total possible 181^3 * 14327^7 * 143 
             //About 1e38
