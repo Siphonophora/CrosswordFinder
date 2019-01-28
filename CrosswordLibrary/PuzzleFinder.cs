@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using System.IO;
 
 namespace CrosswordLibrary
 {
@@ -22,6 +22,8 @@ namespace CrosswordLibrary
         public long DuplicatesFound { get; set; }
         public long InvalidFound { get; set; }
         public long TotalValidCount { get; set; }
+        public long SlicesSkipped { get; set; }
+        public long SliceChildrenSkipped { get; set; }
         public List<Puzzle> ValidPuzzels { get; set; } = new List<Puzzle>();
         public long NumChecked { get; set; } = 0;
         public PuzzleChecker PuzzleChecker { get; set; }
@@ -70,7 +72,7 @@ namespace CrosswordLibrary
             else
             {
                 var options = GetChildCandidateOptions(GetRootTable(), 0);
-                SearchSlices(searchLimit, options, numOfSlices, new int[numOfSlices]);
+                SearchSlices(searchLimit, options, numOfSlices);
             }
 
             Console.WriteLine("-----------------------------RESULTS--------------------------------------------");
@@ -99,23 +101,66 @@ namespace CrosswordLibrary
             }
         }
 
-        private void SearchSlices(int searchLimit, string[][] options, int numOfSlices, int[] slices, int depth = 0)
+        private void SearchSlices(int searchLimit, string[][] options, int numOfSlices, int[] slices = null, int depth = 0)
         {
             for (int i = 0; i < options[depth].Length; i++)
             {
-                slices[depth] = i;
-                if (numOfSlices > depth + 1)
+                var newSlices = new int[depth + 1];
+                if (slices != null)
                 {
-                    SearchSlices(searchLimit, options, numOfSlices, slices, depth + 1);
+                    for (int j = 0; j < slices.Length; j++)
+                    {
+                        newSlices[j] = slices[j];
+                    }
+                }
+
+                newSlices[depth] = i;
+                SliceInfo = $"Slice = {string.Join(",", newSlices)}";
+
+                var baseSlice = Combinator.FindSliceStart(GetRootTable().Columns, options, newSlices);
+                if (BaseSliceValid(baseSlice))
+                {
+                    if (numOfSlices > depth + 1)
+                    {
+                        SearchSlices(searchLimit, options, numOfSlices, newSlices, depth + 1);
+                    }
+                    else
+                    {
+                        ValidPuzzels = new List<Puzzle>();
+                        ValidPuzzels.Add(GetRootTable());
+                        Search(searchLimit, 0, newSlices);
+                    }
                 }
                 else
                 {
-                    SliceInfo = $"Slice = {string.Join(",", slices)}";
-                    ValidPuzzels = new List<Puzzle>();
-                    ValidPuzzels.Add(GetRootTable());
-                    Search(searchLimit, 0, slices);
+                    int numSkipped = Combinator.SliceChildCount(options, newSlices);
+
+                    SlicesSkipped++;
+                    SliceChildrenSkipped += numSkipped;
+
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.WriteLine($" **** Skipped {SliceInfo} - Had {numSkipped} children");
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
+        }
+
+        private bool BaseSliceValid(string[] baseSlice)
+        {
+            var basePuzzle = new Puzzle(PuzzleSize);
+            basePuzzle.Columns = baseSlice;
+
+            bool valid = PuzzleChecker.IsValidNewPuzzle(basePuzzle);
+
+            if (!valid)
+            {
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.WriteLine("Skipping slice based on:");
+                Console.BackgroundColor = ConsoleColor.Black;
+                PuzzleChecker.Print(basePuzzle);
+            }
+
+            return valid;
         }
 
         private void Search(int limit, int order, int[] slices)
@@ -184,6 +229,7 @@ namespace CrosswordLibrary
                             $"{SliceInfo}" +
                             $" Depth :{(order + 1).ToString("00")} of {SearchLimit}. " +
                             $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
+                            $" {SliceChildrenSkipped.ToString("N0").PadLeft(pad, ' ')} skipped. " +
                             $"Working on {(j + 1).ToString("N0").PadLeft(pad, ' ')} of {childCandidates.Count.ToString("N0").PadLeft(pad, ' ')} children " +
                             $"of # {(i + 1).ToString("N0").PadLeft(pad, ' ')} of {orderPuzzles.Count.ToString("N0").PadLeft(pad, ' ')} puzzels " +
                             $"for order {order} " +

@@ -101,6 +101,134 @@ namespace CrosswordLibrary.UnitTests
             Assert.AreEqual(8, c.Count);
         }
 
+        [Test]
+        public void CombinatorFindSliceStart_0_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb", "bbb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.FindSliceStart(start, options, new int[] { 0 });
+            Assert.AreEqual(new string[] { "a", "b", "c" }, c);
+        }
+
+        [Test]
+        public void CombinatorFindSliceStart_1_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb", "bbb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.FindSliceStart(start, options, new int[] { 1 });
+            Assert.AreEqual(new string[] { "aa", "b", "c" }, c);
+        }
+
+        [Test]
+        public void CombinatorFindSliceStart_2_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb", "bbb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.FindSliceStart(start, options, new int[] { 2});
+            Assert.AreEqual(new string[] { "aaa", "b", "c" }, c);
+        }
+
+        [Test]
+        public void CombinatorFindSliceStart_2x0_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb", "bbb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.FindSliceStart(start, options, new int[] { 2, 0 });
+            Assert.AreEqual(new string[] { "aaa", "b", "c" }, c);
+        }
+
+        [Test]
+        public void CombinatorFindSliceStart_2x2_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb", "bbb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.FindSliceStart(start, options, new int[] { 2, 2 });
+            Assert.AreEqual(new string[] { "aaa", "bbb", "c" }, c);
+        }
+
+        [Test]
+        public void CombinatorFindSliceStart_2x2x1_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb", "bbb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.FindSliceStart(start, options, new int[] { 2, 2, 1 });
+            Assert.AreEqual(new string[] { "aaa", "bbb", "cc" }, c);
+        }
+
+
+
+
+        [Test]
+        public void CombinatorSliceChildCount_0_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb", "bbb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.SliceChildCount(options, new int[] { 2, 2, 1 });
+            Assert.AreEqual(0, c);
+        }
+
+        [Test]
+        public void CombinatorSliceChildCount_3_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.SliceChildCount(options, new int[] { 2, 2 });
+            Assert.AreEqual(3, c);
+        }
+
+        [Test]
+        public void CombinatorSliceChildCount_6_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.SliceChildCount(options, new int[] { 2 });
+            Assert.AreEqual(6, c);
+        }
 
     }
 }

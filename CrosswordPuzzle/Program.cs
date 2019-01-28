@@ -12,7 +12,7 @@ namespace CrosswordPuzzle
     {
         static void Main(string[] args)
         {
-            Console.WindowWidth = 300;
+            Console.WindowWidth = 200;
             Console.WindowHeight = 70;
             //var bits = new BitArray(4);
             //bool[] myBools = new bool[15] { false, true, true, true, true, false, false, false, false, true, true, true, true, true, true };

@@ -63,5 +63,38 @@ namespace CrosswordLibrary
             }
             return results;
         }
+
+        public static T[] FindSliceStart<T>(T[] start, T[][] options, int[] slices)
+        {
+            var result = start.ToArray();
+            var size = options.Length;
+
+            if (slices != null)
+            {
+                for (int i = 0; i < slices.Length; i++)
+                {
+                    result[i] = options[i][slices[i]];
+                }
+            }
+
+            return result;
+        }
+
+        public static int SliceChildCount(string[][] options, int[] slices)
+        {
+            //This slice is the whole length of options. therefore it has zero children
+            if (options.Length == slices.Length)
+            {
+                return 0;
+            }
+
+            int count = 1;
+            for (int i = slices.Length; i < options.Length; i++)
+            {
+                count *= options[i].Length;
+            }
+
+            return count;
+        }
     }
 }
