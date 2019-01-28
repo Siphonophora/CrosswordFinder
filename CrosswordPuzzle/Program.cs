@@ -12,7 +12,8 @@ namespace CrosswordPuzzle
     {
         static void Main(string[] args)
         {
-
+            Console.WindowWidth = 250;
+            Console.WindowHeight = 70;
             //var bits = new BitArray(4);
             //bool[] myBools = new bool[15] { false, true, true, true, true, false, false, false, false, true, true, true, true, true, true };
 
@@ -24,23 +25,28 @@ namespace CrosswordPuzzle
             //var pf5_7 = new PuzzleFinder(cf5.ValidColumns, 7, true);
 
             //Total found with cheaters ~350
-            //Total without cheaters 6
-            var cf7 = new ColumnFinder(7);
-            var cc7 = new ColumnClassifier(cf7.ValidColumns);
-            var pf7_7 = new PuzzleFinder(cf7.ValidColumns,5, true);
+            //Total without cheaters 10
+            //var cf7 = new ColumnFinder(7);
+            //var cc7 = new ColumnClassifier(cf7.ValidColumns);
+            //var pf7_7 = new PuzzleFinder(cf7.ValidColumns, 5, true);
+
+
+            //var cf9 = new ColumnFinder(9);
+            //var cc9 = new ColumnClassifier(cf9.ValidColumns);
+            //var pf9_7 = new PuzzleFinder(cf9.ValidColumns, 7, true);
 
             //var cf11 = new ColumnFinder(11);
             //var cc11 = new ColumnClassifier(cf11.ValidColumns);
-            //var pf11_7 = new PuzzleFinder(cf11.ValidColumns, 15, true);
+            //var pf11_7 = new PuzzleFinder(cf11.ValidColumns, 11, true);
 
 
             //Total possible if using cheaters 1.5e16
             //Actual Total found by other participant 4e10
             //Total possible without chetaers 1.5e12 ==  14^ 3 * 304 ^ 3 * 20 
 
-            //var cf13 = new ColumnFinder(13);
-            //var cc13 = new ColumnClassifier(cf13.ValidColumns);
-            //var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true);
+            var cf13 = new ColumnFinder(13);
+            var cc13 = new ColumnClassifier(cf13.ValidColumns);
+            var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true);
 
 
 
@@ -63,8 +69,13 @@ namespace CrosswordPuzzle
             //var cc21 = new ColumnClassifier(cf21.ValidColumns);
 
 
+
+
             Console.WriteLine("Thats it");
-            Console.ReadLine();
+            while (true)
+            {
+                Console.ReadKey();
+            }
         }
     }
 }

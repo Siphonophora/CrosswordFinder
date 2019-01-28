@@ -7,114 +7,14 @@ using System.Threading.Tasks;
 
 namespace CrosswordLibrary
 {
-    public static class PuzzleChecker
+    public class PuzzleChecker
     {
-        //public PuzzleChecker(int size, Hashtable columnHashtable)
-        //{
-        //    Size = size;
-        //    ColumnHashtable = columnHashtable;
-        //    DefiningColumns = new Column[((size + 1) / 2)];
-
-        //    Cells = new bool[Size][];
-
-        //    for (int i = 0; i < Size; i++)
-        //    {
-        //        Cells[i] = new bool[Size];
-        //        for (int j = 0; j < Size; j++)
-        //        {
-        //            Cells[i][j] = true;
-        //        }
-        //    }
-        //}
-
-        //public int Size { get; private set; }
-        //public Hashtable ColumnHashtable { get; }
-        //public Column[] DefiningColumns { get; private set; }
-        //public bool[][] Cells { get; private set; }
-
-        //public void SetColumn(Column col, int columnNum)
-        //{
-        //    if (columnNum < 0)
-        //    {
-        //        throw new ArgumentException("Cannot set a negative column");
-        //    }
-        //    if (columnNum >= (Size + 1) / 2)
-        //    {
-        //        throw new ArgumentException("Cannot set a column past the midpoint");
-        //    }
-        //    if (columnNum == (Size - 1) / 2 && !col.IsSymetric)
-        //    {
-        //        throw new ArgumentException("Mid point must be symetric");
-        //    }
-
-        //    DefiningColumns[columnNum] = col;
-
-        //    for (int i = 0; i < Size; i++)
-        //    {
-        //        Cells[i][columnNum] = col.Cells[i];
-
-        //        //If not the midpoint
-        //        if (columnNum < (Size - 1) / 2)
-        //        {
-        //            Cells[Size - 1 - i][Size - 1 - columnNum] = col.Cells[i];
-        //        }
-        //    }
-        //}
-
-
-
-        //public bool IsValid()
-        //{
-        //    for (int i = 0; i < Size; i++)
-        //    {
-        //        if (!ColumnHashtable.Contains(RowString(i)))
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //}
-
-        //public string ColumnString(int col)
-        //{
-        //    var cells = new bool[Size];
-        //    for (int i = 0; i < Size; i++)
-        //    {
-        //        cells[i] = Cells[i][col];
-        //    }
-        //    return CellsToString(cells);
-        //}
-
-        //public string RowString(int row)
-        //{
-        //    return CellsToString(Cells[row].ToArray());
-        //}
-
-        //public string CellsToString(bool[] cells)
-        //{
-        //    string s = "";
-        //    foreach (var cell in cells)
-        //    {
-        //        s += cell ? "1" : "0";
-        //    }
-        //    return s;
-        //}
-
-        //public override string ToString()
-        //{
-        //    string s = "";
-        //    foreach (var col in DefiningColumns)
-        //    {
-        //        s += s.Length == 0 ? "" : ".";
-        //        s += col.ToString();
-        //    }
-        //    return s;
-        //}
-
-        //public int Order =>  DefiningColumns.Sum(x => x.Order);
-
-        public static Hashtable ColumnHashtable { get; set; } = new Hashtable();
-        public static int InvalidRow { get; set; } = 0;
+        public Hashtable ColumnHashtable { get; set; } = new Hashtable();
+        public long InvalidRowCount { get; set; } = 0;
+        public long CheaterCount { get; set; } = 0;
+        public long NotContiuousCount { get; set; } = 0;
+        public int Size { get; set; } = 0;
+        public int Mid { get; set; } = 0;
 
         /// <summary>
         /// 
@@ -122,24 +22,51 @@ namespace CrosswordLibrary
         /// <param name="orderPuzzle"></param>
         /// <param name="candidate">Ref because we calculate word count in this </param>
         /// <returns></returns>
-        public static bool IsValidNewPuzzle(Puzzle candidate)
+        public bool IsValidNewPuzzle(Puzzle candidate)
         {
             var cols = GetCols(candidate);
-            var rows = GetRows(cols);
 
-            foreach (var row in rows)
+            for (int i = 0; i < candidate.Size; i++)
             {
-                if (!ColumnHashtable.ContainsKey(row))
+                var row = GetRow(cols, i);
+                var col = (Column)ColumnHashtable[row];
+                if (col == null)
                 {
-                    InvalidRow++;
+                    //Catch when not a valid key
+                    InvalidRowCount++;
                     return false;
                 }
+
+                //Test the special case that the three top and three bottom rows MUST be eligible to be in the left colum, or they are cheaters.
+                if ((i <= 2 || i >= candidate.Size - 3) && col.ValidLeftColumn == false)
+                {
+                    InvalidRowCount++;
+                    return false;
+                }
+
+            }
+
+            if (HasCheater(cols))
+            {
+                CheaterCount++;
+                return false;
+            }
+
+            if (NotContinous(cols))
+            {
+                NotContiuousCount++;
+                return false;
             }
 
             return true;
         }
 
-        public static string[] GetCols(Puzzle puzzle)
+        private bool NotContinous(string[] cols)
+        {
+            return false;
+        }
+
+        public string[] GetCols(Puzzle puzzle)
         {
             var cols = new string[puzzle.Size];
 
@@ -159,28 +86,86 @@ namespace CrosswordLibrary
             return cols;
         }
 
-        public static string[] GetRows(string[] cols)
+        public string GetRow(string[] cols, int index)
         {
+            var sb = new StringBuilder(Size);
+            for (int i = 0; i < cols.Length; i++)
+            {
+                sb.Append(cols[i][index]);
+            }
+
+            return sb.ToString();
+        }
+
+        public string[] GetRows(string[] cols)
+        {
+
             var rows = new string[cols.Length];
+            var sb = new StringBuilder(Size);
             for (int i = 0; i < cols.Length; i++)
             {
                 for (int j = 0; j < cols.Length; j++)
                 {
-                    rows[i] += cols[j][i];
+                    sb.Append(cols[j][i]);
                 }
+                rows[i] = sb.ToString();
+                sb.Clear();
             }
 
             return rows;
         }
 
-        public static string Reverse(string s)
+        public bool HasCheater(string[] cols)
+        {
+            for (int i = 0; i < Mid; i++)
+            {
+                for (int j = 0; j < cols[0].Length; j++)
+                {
+                    if (cols[i][j] == '1')
+                    {
+                        continue; //this is a white cell, can't be a cheat
+                    }
+
+                    //Try all four types of 'L' cheaters. 
+                    if (i > 0)
+                    {
+                        if (j > 0)
+                        {
+                            if (cols[i - 1][j] == '0' && cols[i][j - 1] == '0') { return true; }
+                        }
+
+                        if (j < Size - 1)
+                        {
+                            if (cols[i - 1][j] == '0' && cols[i][j + 1] == '0') { return true; }
+                        }
+                    }
+
+                    if (i < Size - 1)
+                    {
+                        if (j > 0)
+                        {
+                            if (cols[i + 1][j] == '0' && cols[i][j - 1] == '0') { return true; }
+                        }
+
+                        if (j < Size - 1)
+                        {
+                            if (cols[i + 1][j] == '0' && cols[i][j + 1] == '0') { return true; }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public string Reverse(string s)
         {
             char[] charArray = s.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);
         }
 
-        public static void Print(Puzzle candidate)
+        public void Print(Puzzle candidate)
         {
             var cols = GetCols(candidate);
             int size = candidate.Size;
@@ -188,7 +173,7 @@ namespace CrosswordLibrary
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(" " + new string(' ', size) + " ");
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine($"Order: {candidate.Order}");
+            Console.WriteLine($" Order: {candidate.Order}");
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Blue;
             for (int i = 0; i < size; i++)
@@ -198,7 +183,7 @@ namespace CrosswordLibrary
                 Console.Write(" ");
                 for (int j = 0; j < size; j++)
                 {
-                    if (cols[i][j] == '1')
+                    if (cols[j][i] == '1')
                     {
                         Console.BackgroundColor = ConsoleColor.White;
                         Console.Write("A");
@@ -211,15 +196,7 @@ namespace CrosswordLibrary
                 }
 
                 Console.BackgroundColor = ConsoleColor.Gray;
-                //if (ColumnHashtable.Contains(RowString(i)))
-                //{
                 Console.WriteLine(" ");
-                //}
-                //else
-                //{
-                //    Console.WriteLine("  <= Bad");
-                //}
-
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
             }

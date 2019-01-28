@@ -17,10 +17,13 @@ namespace CrosswordLibrary
         public bool SearchComplete { get; set; } = true;
         public Hashtable ColumnHashtable { get; set; } = new Hashtable();
         public Hashtable PuzzleHashtable { get; set; } = new Hashtable();
-        public int PuzzelsTested { get; set; }
-        public int DuplicatesFound { get; set; }
-        public int InvalidFound { get; set; }
+        public long PuzzelsTested { get; set; }
+        public long DuplicatesFound { get; set; }
+        public long InvalidFound { get; set; }
+        public long TotalValidCount { get; set; }
         public List<Puzzle> ValidPuzzels { get; set; } = new List<Puzzle>();
+        public long NumChecked { get; set; } = 0;
+        public PuzzleChecker PuzzleChecker { get; set; }
 
         public PuzzleFinder(ColumnSet validColumns, int searchLimit, bool print = false)
         {
@@ -31,13 +34,19 @@ namespace CrosswordLibrary
             {
                 ColumnHashtable.Add(item.ToString(), item);
             }
-            PuzzleChecker.ColumnHashtable = ColumnHashtable;
-            PuzzleSize = validColumns.ColumnSize;
 
+            PuzzleSize = validColumns.ColumnSize;
             if (PuzzleSize % 2 == 0)
             {
                 throw new ArgumentException("Puzzle size may not be even");
             }
+
+            PuzzleChecker = new PuzzleChecker
+            {
+                ColumnHashtable = ColumnHashtable,
+                Size = PuzzleSize,
+                Mid = (PuzzleSize + 1) / 2
+            };
 
             //ValidColumns.PrintInfo();
             //Console.WriteLine("");
@@ -46,63 +55,73 @@ namespace CrosswordLibrary
             ValidPuzzels.Add(GetRootTable());
             Search(searchLimit);
 
-            Console.WriteLine($"Found {ValidPuzzels.Count} puzzles. Size {PuzzleSize}. Checked puzzels {PuzzelsTested}. SearchLimit {SearchLimit}. Elapsed {(DateTime.Now - StartTime).TotalSeconds} seconds");
-
+            Console.WriteLine();
+            Console.WriteLine($"Found {ValidPuzzels.Count} puzzles. " +
+                $"Size {PuzzleSize}. " +
+                $"Checked puzzels {PuzzelsTested}. " +
+                $"SearchLimit {SearchLimit}. " +
+                $"Elapsed {(DateTime.Now - StartTime).TotalSeconds} seconds");
+            Console.WriteLine();
 
             int printPause = 0;
+            int printSkip = 10;
             if (print)
             {
-                foreach (var puzzle in ValidPuzzels)
+                for (int i = 0; i < ValidPuzzels.Count; i++)
                 {
-                    if (printPause % 10 == 0) { Console.ReadKey(); }
-                    PuzzleChecker.Print(puzzle);
-                    printPause++;
+                    if (i % printSkip == 0)
+                    {
+                        if (printPause % 5 == 0) { Console.ReadKey(); }
+                        PuzzleChecker.Print(ValidPuzzels[i]);
+                        printPause++;
+
+                    }
                 }
             }
         }
 
-        //private void PrintPuzzels(bool print)
-        //{
-        //    var puzzelList = new List<PuzzleChecker>();
-        //    int i = 0;
-        //    if (print)
-        //    {
-        //        var puzzles = PuzzleHashtable.Values;
-        //        foreach (PuzzleChecker item in puzzles)
-        //        {
-        //            puzzelList.Add(item);
-        //        }
-
-        //        Console.ReadKey();
-        //        //foreach (var item in puzzelList.OrderByDescending(x => x.ToString()))
-        //        var orderedList = puzzelList.OrderByDescending(x => x.Order);
-        //        foreach (var item in orderedList)
-        //        {
-
-        //            item.Print();
-        //            i++;
-        //            if (i % 10 == 0)
-        //            {
-        //                Console.ReadKey();
-        //            }
-        //        }
-        //    }
-        //}
 
         private void Search(int limit, int order = 0)
         {
 
+            long startPuzzleCount = TotalValidCount;
+            long startInvalidRow = PuzzleChecker.InvalidRowCount;
+            long startCheater = PuzzleChecker.CheaterCount;
+            long startNotContinous = PuzzleChecker.NotContiuousCount;
             var orderPuzzles = ValidPuzzels.Where(x => x.Order == order).ToList();
+            int pad = 15;
 
-            foreach (var orderPuzzle in orderPuzzles)
+            if (orderPuzzles.Count == 0)
             {
-                List<Puzzle> childCandidates = GetChildCandidates(orderPuzzle, order);
+                Console.WriteLine("Done searching");
+                return;
+            }
 
-                foreach (var candidate in childCandidates)
+            ValidPuzzels.RemoveAll(x => x.Order < order); //Memory managemenet
+
+            for (int i = 0; i < orderPuzzles.Count; i++)
+            {
+                List<Puzzle> childCandidates = GetChildCandidates(orderPuzzles[i], order);
+
+                for (int j = 0; j < childCandidates.Count; j++)
                 {
-                    if (PuzzleChecker.IsValidNewPuzzle(candidate))
+                    if (PuzzleChecker.IsValidNewPuzzle(childCandidates[j]))
                     {
-                        ValidPuzzels.Add(candidate);
+                        ValidPuzzels.Add(childCandidates[j]);
+                        TotalValidCount++;
+                    }
+
+                    NumChecked++;
+                    if (NumChecked % 1000000 == 0)
+                    {
+                        Console.WriteLine(
+                            $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
+                            $"Working on {(j + 1).ToString("N0").PadLeft(pad, ' ')} of {childCandidates.Count.ToString("N0").PadLeft(pad, ' ')} children " +
+                            $"of # {(i + 1).ToString("N0").PadLeft(pad, ' ')} of {orderPuzzles.Count.ToString("N0").PadLeft(pad, ' ')} puzzels " +
+                            $"for order {order} " +
+                            $"Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')} seconds");
+
+                        PuzzleChecker.Print(ValidPuzzels.Last());
                     }
                 }
             }
@@ -110,11 +129,23 @@ namespace CrosswordLibrary
 
             if (limit == order)
             {
-                Console.WriteLine("Done searching");
+                Console.WriteLine("Done searching - HIT SEARCH ORDER LIMIT");
                 return;
             }
             else
             {
+                Console.WriteLine();
+                Console.WriteLine(
+                    $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
+                    $"Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')} seconds" +
+                    $" Total Valid: {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
+                    $" New Valid: {(TotalValidCount - startPuzzleCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
+                    $" Invalid Row: {(PuzzleChecker.InvalidRowCount - startInvalidRow).ToString("N0").PadLeft(pad, ' ')} " +
+                    $" Cheater: {(PuzzleChecker.CheaterCount - startCheater).ToString("N0").PadLeft(pad, ' ')} " +
+                    $" Not Continuous: {(PuzzleChecker.NotContiuousCount - startNotContinous).ToString("N0").PadLeft(pad, ' ')} " +
+                    $"Depth :{order + 1} of {SearchLimit}. ");
+                Console.WriteLine();
+
                 Search(limit, order + 1);
             }
         }
@@ -149,7 +180,7 @@ namespace CrosswordLibrary
                         else if (i == orderPuzzle.Columns.Length - 1 && childCol.CanBeCenterColumn())
                         {
                             //The symetric versio might not be valid so, check that it is
-                            if (ColumnHashtable.ContainsKey(childCol.ToStringSymetric()))
+                            if (ColumnHashtable.ContainsKey(childCol.SymetricString))
                             {
                                 possibleCols.Add(child);
                             }

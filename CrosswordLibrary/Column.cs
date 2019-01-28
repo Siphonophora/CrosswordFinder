@@ -11,6 +11,8 @@ namespace CrosswordLibrary
         public Column(bool[] cells)
         {
             Cells = cells ?? throw new ArgumentNullException(nameof(cells));
+
+            SymetricString = ToStringSymetric();
         }
 
         /// <summary>
@@ -18,6 +20,7 @@ namespace CrosswordLibrary
         /// </summary>
         public bool[] Cells { get; private set; }
         public string Parent { get; set; }
+        public string SymetricString { get; set; }
         public List<string> Children { get; set; } = new List<string>();
 
 
@@ -142,7 +145,6 @@ namespace CrosswordLibrary
                              $" {ValidLeftColumn.ToString().PadLeft(5)}" +
                              $" {WordCount()}" 
                              );
-
         }
 
         public int Order => Cells.Where(x => !x).Count();

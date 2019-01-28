@@ -91,7 +91,7 @@ namespace CrosswordLibrary
             Console.WriteLine($"Total Columns: {ValidColumns.Columns.Where(x =>  x.Order <= moovlc).Count()}");
             //Console.WriteLine($"Symetric Columns: {ValidColumns.Columns.Where(x => x.IsSymetric && x.Order <= moovlc).Count()}");
             Console.WriteLine($"ValidLeftColumn Columns: {ValidColumns.Columns.Where(x => x.ValidLeftColumn && x.Order <= moovlc).Count()}");
-
+            Console.WriteLine();
         }
     }
 }

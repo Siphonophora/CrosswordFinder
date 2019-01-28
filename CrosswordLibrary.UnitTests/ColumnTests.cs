@@ -89,7 +89,23 @@ namespace CrosswordLibrary.UnitTests
         public void Column_ToStringSymetric_IsCorrect(string symetric, bool[] cells)
         {
             var c = new Column(cells);
-            Assert.AreEqual(symetric, c.ToStringSymetric());
+            Assert.AreEqual(symetric, c.SymetricString);
+        }
+
+        [TestCase(true, new bool[5] { true, true, true, true, true })]
+        [TestCase(false, new bool[5] { false, true, true, true, true })]
+        [TestCase(false, new bool[5] { false, true, true, true, false })]
+        [TestCase(true, new bool[11] { true, true, true, true, true, true, true, true, true, true, true })]
+        [TestCase(true, new bool[11] { true, true, true, false, true, true, true, true, true, true, true })]
+        [TestCase(true, new bool[11] { true, true, true,  true, true, true, true, true, false, true, true })]
+        [TestCase(true, new bool[11] { true, true, true, true, true, true, false, true, true,  true, true })]
+        [TestCase(false, new bool[11] { true, true, true, false, false, true, true, true, true, true, true })]
+        [TestCase(false, new bool[11] { true, true, true, true, true, true, true, false, false, true, true })]
+        [TestCase(false, new bool[11] { true, true, true, true, false, false, false, true, true, true, true })]
+        public void Column_LeftEligible_IsCorrect(bool eligible, bool[] cells)
+        {
+            var c = new Column(cells);
+            Assert.AreEqual(eligible, c.ValidLeftColumn);
         }
     }
 }

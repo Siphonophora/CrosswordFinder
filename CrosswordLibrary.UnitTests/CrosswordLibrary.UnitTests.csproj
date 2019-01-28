@@ -54,10 +54,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColumnFinderTests.cs" />
     <Compile Include="ColumnTests.cs" />
     <Compile Include="CombinatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PuzzleCheckerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
