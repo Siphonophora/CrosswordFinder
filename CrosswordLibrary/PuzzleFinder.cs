@@ -28,6 +28,8 @@ namespace CrosswordLibrary
         public long NumChecked { get; set; } = 0;
         public PuzzleChecker PuzzleChecker { get; set; }
         public string SliceInfo { get; set; } = "";
+        public long SlicesChecked { get; private set; }
+        public long TotalSliceCount { get; private set; }
 
 
         /// <summary>
@@ -75,14 +77,8 @@ namespace CrosswordLibrary
                 SearchSlices(searchLimit, options, numOfSlices);
             }
 
-            Console.WriteLine("-----------------------------RESULTS--------------------------------------------");
-            Console.WriteLine($" {NumChecked.ToString("N0")} checked. ");
-            Console.WriteLine($" Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0")} seconds");
-            Console.WriteLine($" Total Valid: {(TotalValidCount).ToString("N0")} puzzles of");
-            Console.WriteLine($" Total Invalid Row: {(PuzzleChecker.InvalidRowCount).ToString("N0")} ");
-            Console.WriteLine($" Total Cheater: {(PuzzleChecker.CheaterCount).ToString("N0")} ");
-            Console.WriteLine($" Total Not Continuous: {(PuzzleChecker.NotContiuousCount).ToString("N0")} ");
-            Console.WriteLine("---------------------------------------------------------------------------------");
+            Console.WriteLine("FINAL!!!!!!!!");
+            WriteStatus();
 
             int printPause = 0;
             int printSkip = 10;
@@ -103,6 +99,11 @@ namespace CrosswordLibrary
 
         private void SearchSlices(int searchLimit, string[][] options, int numOfSlices, int[] slices = null, int depth = 0)
         {
+            if(depth == 0)
+            {
+                TotalSliceCount = Combinator.SliceChildCount(options);
+            }
+
             for (int i = 0; i < options[depth].Length; i++)
             {
                 var newSlices = new int[depth + 1];
@@ -115,7 +116,7 @@ namespace CrosswordLibrary
                 }
 
                 newSlices[depth] = i;
-                SliceInfo = $"Slice = {string.Join(",", newSlices)}";
+                SliceInfo = $"{string.Join(",", newSlices)}";
 
                 var baseSlice = Combinator.FindSliceStart(GetRootTable().Columns, options, newSlices);
                 if (BaseSliceValid(baseSlice))
@@ -128,6 +129,7 @@ namespace CrosswordLibrary
                     {
                         ValidPuzzels = new List<Puzzle>();
                         ValidPuzzels.Add(GetRootTable());
+                        SlicesChecked++;
                         Search(searchLimit, 0, newSlices);
                     }
                 }
@@ -138,9 +140,9 @@ namespace CrosswordLibrary
                     SlicesSkipped++;
                     SliceChildrenSkipped += numSkipped;
 
-                    Console.BackgroundColor = ConsoleColor.Green;
-                    Console.WriteLine($" **** Skipped {SliceInfo} - Had {numSkipped} children");
-                    Console.BackgroundColor = ConsoleColor.Black;
+                    //Console.BackgroundColor = ConsoleColor.Green;
+                    //Console.WriteLine($" **** Skipped {SliceInfo} - Had {numSkipped} children");
+                    //Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
         }
@@ -152,15 +154,35 @@ namespace CrosswordLibrary
 
             bool valid = PuzzleChecker.IsValidNewPuzzle(basePuzzle);
 
-            if (!valid)
-            {
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.WriteLine("Skipping slice based on:");
-                Console.BackgroundColor = ConsoleColor.Black;
-                PuzzleChecker.Print(basePuzzle);
-            }
+            //if (!valid)
+            //{
+            //    Console.BackgroundColor = ConsoleColor.Green;
+            //    Console.WriteLine("Skipping slice based on:");
+            //    Console.BackgroundColor = ConsoleColor.Black;
+            //    PuzzleChecker.Print(basePuzzle);
+            //}
 
             return valid;
+        }
+
+        private void WriteStatus()
+        {
+            int pad = 30;
+
+            Console.WriteLine("------------------------------Status--------------------------------------------");
+            Console.WriteLine($" Elapsed Seconds       {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad,' ')}");
+            Console.WriteLine($" Approximate Progress  {((SlicesChecked + SliceChildrenSkipped)/TotalSliceCount).ToString("P").PadLeft(pad, ' ')}");
+            Console.WriteLine($" Slice Info            {SliceInfo.PadLeft(pad, ' ')} ");
+            Console.WriteLine($" Total Slices          {TotalSliceCount.ToString("N0").PadLeft(pad, ' ')} ");
+            Console.WriteLine($" Checked Slices        {SlicesChecked.ToString("N0").PadLeft(pad, ' ')} ");
+            Console.WriteLine($" Skipped Slices        {SliceChildrenSkipped.ToString("N0").PadLeft(pad, ' ')} ");
+            Console.WriteLine($" Puzzels Checked       {NumChecked.ToString("N0").PadLeft(pad, ' ')}");
+            Console.WriteLine($" Total Invalid Row:    {(PuzzleChecker.InvalidRowCount).ToString("N0").PadLeft(pad, ' ')} ");
+            Console.WriteLine($" Total Cheater:        {(PuzzleChecker.CheaterCount).ToString("N0").PadLeft(pad, ' ')} ");
+            Console.WriteLine($" Total Not Continuous: {(PuzzleChecker.NotContiuousCount).ToString("N0").PadLeft(pad, ' ')} ");
+            Console.WriteLine($" Total Valid:          {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')}");
+            Console.WriteLine("---------------------------------------------------------------------------------");
+                                           
         }
 
         private void Search(int limit, int order, int[] slices)
@@ -171,23 +193,11 @@ namespace CrosswordLibrary
             long startCheater = PuzzleChecker.CheaterCount;
             long startNotContinous = PuzzleChecker.NotContiuousCount;
             var orderPuzzles = ValidPuzzels.Where(x => x.Order == order).ToList();
-            int pad = 15;
+            
 
             if (orderPuzzles.Count == 0)
             {
-                string s = $"{SliceInfo}" +
-                    $" Depth :{(order + 1).ToString("00")} of {SearchLimit}. " +
-                    $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
-                    $"Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')} seconds" +
-                    $" Total Valid: {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
-                    $" New Valid: {(TotalValidCount - startPuzzleCount).ToString("N0").PadLeft(pad, ' ')} puzzles of" +
-                    $" Invalid Row: {(PuzzleChecker.InvalidRowCount - startInvalidRow).ToString("N0").PadLeft(pad, ' ')} " +
-                    $" Cheater: {(PuzzleChecker.CheaterCount - startCheater).ToString("N0").PadLeft(pad, ' ')} " +
-                    $" Not Continuous: {(PuzzleChecker.NotContiuousCount - startNotContinous).ToString("N0").PadLeft(pad, ' ')} ";
-
-                string outDir = $"C:\\\\Crossword\\{PuzzleSize}\\";
-                Directory.CreateDirectory(outDir);
-                File.AppendAllLines($"{outDir}Log.txt", new String[] { s });
+                //TODO Log slice final results;
 
                 return;
             }
@@ -225,16 +235,7 @@ namespace CrosswordLibrary
                     NumChecked++;
                     if (NumChecked % 1000000 == 0)
                     {
-                        Console.WriteLine(
-                            $"{SliceInfo}" +
-                            $" Depth :{(order + 1).ToString("00")} of {SearchLimit}. " +
-                            $" {NumChecked.ToString("N0").PadLeft(pad, ' ')} checked. " +
-                            $" {SliceChildrenSkipped.ToString("N0").PadLeft(pad, ' ')} skipped. " +
-                            $"Working on {(j + 1).ToString("N0").PadLeft(pad, ' ')} of {childCandidates.Count.ToString("N0").PadLeft(pad, ' ')} children " +
-                            $"of # {(i + 1).ToString("N0").PadLeft(pad, ' ')} of {orderPuzzles.Count.ToString("N0").PadLeft(pad, ' ')} puzzels " +
-                            $"for order {order} " +
-                            $"Elapsed: {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')} seconds");
-
+                        WriteStatus();
                         PuzzleChecker.Print(ValidPuzzels.Last());
                     }
                 }

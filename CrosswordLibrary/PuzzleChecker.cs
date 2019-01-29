@@ -55,15 +55,143 @@ namespace CrosswordLibrary
             if (NotContinous(cols))
             {
                 NotContiuousCount++;
+                //Console.WriteLine("NON Continuous Example");
+                //Print(candidate);
+                //Console.ReadKey();
                 return false;
             }
 
             return true;
         }
 
-        private bool NotContinous(string[] cols)
+        /// <summary>
+        /// Determines continuity of puzzle by searching first down then up to find all 
+        /// </summary>
+        /// <param name="cols"></param>
+        /// <returns></returns>
+        public bool NotContinous(string[] cols)
         {
-            return false;
+            var words = new List<Word>();
+            var colNum = cols.Length;
+            var numContinuous = 0;
+            var newContinuous = 0;
+
+            for (int i = 0; i < cols.Length; i++)
+            {
+                List<Word> newWords = GetWords(cols[i], i);
+                words.AddRange(newWords);
+            }
+
+            //First word is contiguous
+            words.Where(x => x.Col == 0).First().Continuous = true;
+
+            //Search in loops over the puzzle. We keepg going so long as we ARE finding new continuous 
+            do
+            {
+                numContinuous += newContinuous;
+                //Search Down. 
+                for (int i = 0; i < colNum - 1; i++)
+                {
+                    var continuous = words.Where(x => x.Col == i && x.Continuous).ToList();
+                    var next = words.Where(x => x.Col == i + 1).ToList();
+                    for (int j = 0; j < next.Count(); j++)
+                    {
+                        for (int k = 0; k < continuous.Count(); k++)
+                        {
+                            if (WordsOverlap(continuous[k], next[j]))
+                            {
+                                next[j].Continuous = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //Search Up. 
+                for (int i = colNum - 1; i >= 0; i--)
+                {
+                    var continuous = words.Where(x => x.Col == i && x.Continuous).ToList();
+                    var next = words.Where(x => x.Col == i - 1).ToList();
+                    for (int j = 0; j < next.Count(); j++)
+                    {
+                        for (int k = 0; k < continuous.Count(); k++)
+                        {
+                            if (WordsOverlap(continuous[k], next[j]))
+                            {
+                                next[j].Continuous = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //If there are no non continuous in any row after the up search, then its non continuous
+                if (words.Where(x => x.Continuous == false).Any() == false)
+                {
+                    return false;
+                }
+
+                newContinuous = words.Where(x => x.Continuous).Count() - numContinuous;
+            } while (newContinuous > 0);
+
+            //If we didn't
+            return true;
+        }
+
+        public List<Word> GetWords(string col, int colNum = 0)
+        {
+            var words = new List<Word>();
+            bool inWord = false;
+            var currentWord = new Word();
+            int i;
+            for (i = 0; i < col.Length; i++)
+            {
+
+                if (inWord == false)
+                {
+                    if (col[i] == '1')
+                    {
+                        currentWord.Start = i;
+                        currentWord.Col = colNum;
+                        inWord = true;
+                    }
+                }
+                else
+                {
+                    if (col[i] == '0')
+                    {
+                        currentWord.Stop = i - 1;
+                        words.Add(currentWord);
+                        currentWord = new Word(); //Do this here, because we have the function scoped variable
+                        inWord = false;
+                    }
+                }
+            }
+            if (inWord)
+            {
+                currentWord.Stop = i - 1;
+                words.Add(currentWord);
+            }
+
+            return words;
+        }
+
+        public bool WordsOverlap(Word a, Word b)
+        {
+            return a.Start <= b.Stop && b.Start <= a.Stop;
+        }
+
+        public class Word
+        {
+            public int Start;
+            public int Stop;
+            public int Col;
+            public bool Continuous; //Default is false;
+
+            public override string ToString()
+            {
+                return $"Col {Col}, Start {Start}, Stop {Stop}, Continuous {Continuous}";
+            }
         }
 
         public string[] GetCols(Puzzle puzzle)

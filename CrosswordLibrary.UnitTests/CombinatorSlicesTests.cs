@@ -230,5 +230,19 @@ namespace CrosswordLibrary.UnitTests
             Assert.AreEqual(6, c);
         }
 
+        [Test]
+        public void CombinatorSliceChildCount_Null_Pass()
+        {
+            var start = new string[] { "a", "b", "c" };
+            var options = new string[][] {
+                new string[] { "a", "aa", "aaa" },
+                new string[] { "b", "bb" },
+                new string[] { "c", "cc", "ccc" }
+            };
+
+            var c = Combinator.SliceChildCount(options, null);
+            Assert.AreEqual(18, c);
+        }
+
     }
 }

@@ -87,7 +87,7 @@ namespace CrosswordPuzzle
             //About 6e13
             var cf15 = new ColumnFinder(15);
             var cc15 = new ColumnClassifier(cf15.ValidColumns);
-            var pf15 = new PuzzleFinder(cf15.ValidColumns, 20, true, 6);
+            var pf15 = new PuzzleFinder(cf15.ValidColumns, 20, true, 7);
 
             //Total possible 181^3 * 14327^7 * 143 
             //About 1e38

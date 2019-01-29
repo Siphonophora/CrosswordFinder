@@ -80,16 +80,16 @@ namespace CrosswordLibrary
             return result;
         }
 
-        public static int SliceChildCount(string[][] options, int[] slices)
+        public static int SliceChildCount(string[][] options, int[] slices = null)
         {
             //This slice is the whole length of options. therefore it has zero children
-            if (options.Length == slices.Length)
+            if (options.Length == (slices?.Length))
             {
                 return 0;
             }
 
             int count = 1;
-            for (int i = slices.Length; i < options.Length; i++)
+            for (int i = slices?.Length ?? 0; i < options.Length; i++)
             {
                 count *= options[i].Length;
             }
