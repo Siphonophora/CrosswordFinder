@@ -203,7 +203,7 @@ namespace CrosswordLibrary
 
              , (DateTime.Now - StartTime).TotalSeconds
              , (double)(SlicesChecked + SliceChildrenSkipped) / TotalSliceCount
-             , SliceInfo
+             , SliceInfo.Trim()
              , TotalSliceCount
              , SlicesChecked
              , SliceChildrenSkipped
