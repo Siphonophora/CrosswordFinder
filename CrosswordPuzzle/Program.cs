@@ -46,6 +46,20 @@ namespace CrosswordPuzzle
 
             //var cf13 = new ColumnFinder(13);
             //var cc13 = new ColumnClassifier(cf13.ValidColumns);
+            //var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true, 6);
+            //------------------------------Status--------------------------------------------
+            //Elapsed Seconds                                530.6
+            //Approximate Progress                          97.89 %  TODO is this because we are skipping the first output of the slices?
+            //Slice Info                                 7,7,7,9,9
+            //Total Slices                               2,560,000
+            //Checked Slices                                13,502
+            //Skipped Slices                             2,492,490
+            //Puzzels Checked                           44,808,746
+            //Total Invalid Row:                        32,510,317
+            //Total Cheater:                             3,350,572
+            //Total Not Continuous:                        138,144
+            //Total Valid:                               8,815,442
+            //-------------------------------------------------------------------------------- -
 
             //var pf13_7 = new PuzzleFinder(cf13.ValidColumns, 15, true);
             //-----------------------------RESULTS--------------------------------------------

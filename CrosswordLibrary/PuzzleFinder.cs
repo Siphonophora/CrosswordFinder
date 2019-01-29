@@ -171,7 +171,7 @@ namespace CrosswordLibrary
 
             Console.WriteLine("------------------------------Status--------------------------------------------");
             Console.WriteLine($" Elapsed Seconds       {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad,' ')}");
-            Console.WriteLine($" Approximate Progress  {((SlicesChecked + SliceChildrenSkipped)/TotalSliceCount).ToString("P").PadLeft(pad, ' ')}");
+            Console.WriteLine($" Approximate Progress  {((double)(SlicesChecked + SliceChildrenSkipped)/TotalSliceCount).ToString("P").PadLeft(pad, ' ')}");
             Console.WriteLine($" Slice Info            {SliceInfo.PadLeft(pad, ' ')} ");
             Console.WriteLine($" Total Slices          {TotalSliceCount.ToString("N0").PadLeft(pad, ' ')} ");
             Console.WriteLine($" Checked Slices        {SlicesChecked.ToString("N0").PadLeft(pad, ' ')} ");
