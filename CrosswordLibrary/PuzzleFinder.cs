@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
+using Serilog;
 
 namespace CrosswordLibrary
 {
@@ -39,7 +39,7 @@ namespace CrosswordLibrary
         /// <param name="searchLimit"></param>
         /// <param name="print"></param>
         /// <param name="numOfSlices">This is how many columns deep we will 'slice' the solving into</param>
-        public PuzzleFinder(ColumnSet validColumns, int searchLimit, bool print = false, int numOfSlices = 0)
+        public PuzzleFinder(ColumnSet validColumns, int searchLimit, bool print, int numOfSlices, int singleSliceToCheck)
         {
 
             ValidColumns = validColumns;
@@ -74,11 +74,13 @@ namespace CrosswordLibrary
             else
             {
                 var options = GetChildCandidateOptions(GetRootTable(), 0);
-                SearchSlices(searchLimit, options, numOfSlices);
+                SearchSlices(searchLimit, options, numOfSlices, null, 0, singleSliceToCheck);
             }
 
             Console.WriteLine("FINAL!!!!!!!!");
             WriteStatus();
+            Log.Logger.Information("Finished");
+            LogStatus();
 
             int printPause = 0;
             int printSkip = 10;
@@ -97,7 +99,7 @@ namespace CrosswordLibrary
             }
         }
 
-        private void SearchSlices(int searchLimit, string[][] options, int numOfSlices, int[] slices = null, int depth = 0)
+        private void SearchSlices(int searchLimit, string[][] options, int numOfSlices, int[] slices, int depth, int singleSliceToCheck)
         {
             if(depth == 0)
             {
@@ -119,11 +121,12 @@ namespace CrosswordLibrary
                 SliceInfo = $"{string.Join(",", newSlices)}";
 
                 var baseSlice = Combinator.FindSliceStart(GetRootTable().Columns, options, newSlices);
-                if (BaseSliceValid(baseSlice))
+                bool checkThisSlice = depth > 0 || singleSliceToCheck == -1 || singleSliceToCheck == i;
+                if (BaseSliceValid(baseSlice) && checkThisSlice)
                 {
                     if (numOfSlices > depth + 1)
                     {
-                        SearchSlices(searchLimit, options, numOfSlices, newSlices, depth + 1);
+                        SearchSlices(searchLimit, options, numOfSlices, newSlices, depth + 1, singleSliceToCheck);
                     }
                     else
                     {
@@ -140,9 +143,9 @@ namespace CrosswordLibrary
                     SlicesSkipped++;
                     SliceChildrenSkipped += numSkipped;
 
-                    //Console.BackgroundColor = ConsoleColor.Green;
-                    //Console.WriteLine($" **** Skipped {SliceInfo} - Had {numSkipped} children");
-                    //Console.BackgroundColor = ConsoleColor.Black;
+                    
+                    Log.Logger.Information("Skipped {SliceInfo} - Had {numSkipped} children", SliceInfo, numSkipped);
+                    
                 }
             }
         }
@@ -183,6 +186,38 @@ namespace CrosswordLibrary
             Console.WriteLine($" Total Valid:          {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')}");
             Console.WriteLine("---------------------------------------------------------------------------------");
                                            
+        }
+
+        private void LogStatus()
+        {
+            int pad = 30;
+
+
+            Log.Logger.Information((" Elapsed Seconds {sec}" +
+            " Approximate Progress {prog}" +
+            " Slice Info {sliceinfo}" +
+            " Total Slices {total slices}" +
+            " Checked Slices {checkedslices}" +
+            " Skipped Slices {skippedslices}" +
+            " Puzzels Checked {puzzelschecked}" +
+            " Total Invalid Row: {totalinvalidrows}" +
+            " Total Cheater: {totalcheater}" +
+            " Total Not Continuous: {totalnotcontinuous}" +
+            " Total Valid: {totalvalid}")
+
+             , (DateTime.Now - StartTime).TotalSeconds
+             , ((double)(SlicesChecked + SliceChildrenSkipped) / TotalSliceCount).ToString("P")
+             , SliceInfo.PadLeft(pad, ' ')
+             , TotalSliceCount
+             , SlicesChecked
+             , SliceChildrenSkipped
+             , NumChecked
+             , (PuzzleChecker.InvalidRowCount)
+             , (PuzzleChecker.CheaterCount)
+             , (PuzzleChecker.NotContiuousCount)
+             , (TotalValidCount)
+             );
+
         }
 
         private void Search(int limit, int order, int[] slices)
@@ -236,7 +271,10 @@ namespace CrosswordLibrary
                     if (NumChecked % 1000000 == 0)
                     {
                         WriteStatus();
-                        PuzzleChecker.Print(ValidPuzzels.Last());
+                        LogStatus();
+                        var lastValid = ValidPuzzels.Last();
+                        Log.Logger.Information("Most recent valid puzzle order: {order}, cols: {@puzzle}", lastValid.Order, lastValid.Columns);
+                        PuzzleChecker.Print(lastValid);
                     }
                 }
             }
