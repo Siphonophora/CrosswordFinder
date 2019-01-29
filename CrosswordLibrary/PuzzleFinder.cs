@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -190,32 +189,29 @@ namespace CrosswordLibrary
 
         private void LogStatus()
         {
-            int pad = 30;
-
-
-            Log.Logger.Information((" Elapsed Seconds {sec}" +
+             Log.Logger.Information(" Elapsed Seconds {sec}" +
             " Approximate Progress {prog}" +
             " Slice Info {sliceinfo}" +
-            " Total Slices {total slices}" +
+            " Total Slices {totalslices}" +
             " Checked Slices {checkedslices}" +
             " Skipped Slices {skippedslices}" +
             " Puzzels Checked {puzzelschecked}" +
             " Total Invalid Row: {totalinvalidrows}" +
             " Total Cheater: {totalcheater}" +
             " Total Not Continuous: {totalnotcontinuous}" +
-            " Total Valid: {totalvalid}")
+            " Total Valid: {totalvalid}"
 
              , (DateTime.Now - StartTime).TotalSeconds
-             , ((double)(SlicesChecked + SliceChildrenSkipped) / TotalSliceCount).ToString("P")
-             , SliceInfo.PadLeft(pad, ' ')
+             , (double)(SlicesChecked + SliceChildrenSkipped) / TotalSliceCount
+             , SliceInfo
              , TotalSliceCount
              , SlicesChecked
              , SliceChildrenSkipped
              , NumChecked
-             , (PuzzleChecker.InvalidRowCount)
-             , (PuzzleChecker.CheaterCount)
-             , (PuzzleChecker.NotContiuousCount)
-             , (TotalValidCount)
+             , PuzzleChecker.InvalidRowCount
+             , PuzzleChecker.CheaterCount
+             , PuzzleChecker.NotContiuousCount
+             , TotalValidCount
              );
 
         }
