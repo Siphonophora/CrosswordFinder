@@ -30,7 +30,7 @@ namespace CrosswordPuzzle
 
             Serilog.Debugging.SelfLog.Enable(Console.Error);
             Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
+            //.WriteTo.Console()
             .WriteTo.File($"{logFolder}\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.File(new JsonFormatter(), $"{logFolder}\\log.json", rollingInterval: RollingInterval.Day)
             .CreateLogger();
