@@ -85,45 +85,13 @@ namespace CrosswordLibrary
             //First word is contiguous
             words.Where(x => x.Col == 0).First().Continuous = true;
 
+            bool down = true;
             //Search in loops over the puzzle. We keepg going so long as we ARE finding new continuous 
             do
             {
                 numContinuous += newContinuous;
-                //Search Down. 
-                for (int i = 0; i < colNum - 1; i++)
-                {
-                    var continuous = words.Where(x => x.Col == i && x.Continuous).ToList();
-                    var next = words.Where(x => x.Col == i + 1).ToList();
-                    for (int j = 0; j < next.Count(); j++)
-                    {
-                        for (int k = 0; k < continuous.Count(); k++)
-                        {
-                            if (WordsOverlap(continuous[k], next[j]))
-                            {
-                                next[j].Continuous = true;
-                                break;
-                            }
-                        }
-                    }
-                }
 
-                //Search Up. 
-                for (int i = colNum - 1; i >= 0; i--)
-                {
-                    var continuous = words.Where(x => x.Col == i && x.Continuous).ToList();
-                    var next = words.Where(x => x.Col == i - 1).ToList();
-                    for (int j = 0; j < next.Count(); j++)
-                    {
-                        for (int k = 0; k < continuous.Count(); k++)
-                        {
-                            if (WordsOverlap(continuous[k], next[j]))
-                            {
-                                next[j].Continuous = true;
-                                break;
-                            }
-                        }
-                    }
-                }
+                SearchContinuous(words, colNum, down);
 
                 //If there are no non continuous in any row after the up search, then its non continuous
                 if (words.Where(x => x.Continuous == false).Any() == false)
@@ -131,11 +99,56 @@ namespace CrosswordLibrary
                     return false;
                 }
 
+                down = !down;
                 newContinuous = words.Where(x => x.Continuous).Count() - numContinuous;
             } while (newContinuous > 0);
 
             //If we didn't
             return true;
+        }
+
+        private void SearchContinuous(List<Word> words, int colNum, bool down)
+        {
+            if (down)
+            {
+                //Search Down. 
+                for (int i = 0; i < colNum - 1; i++)
+                {
+                    var continuous = words.Where(x => x.Col == i && x.Continuous).ToArray();
+                    var next = words.Where(x => x.Col == i + 1 && !x.Continuous).ToArray();
+                    for (int j = 0; j < next.Count(); j++)
+                    {
+                        for (int k = 0; k < continuous.Count(); k++)
+                        {
+                            if (WordsOverlap(continuous[k], next[j]))
+                            {
+                                next[j].Continuous = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //Search Up. 
+                for (int i = colNum - 1; i >= 0; i--)
+                {
+                    var continuous = words.Where(x => x.Col == i && x.Continuous).ToArray();
+                    var next = words.Where(x => x.Col == i - 1 && !x.Continuous).ToArray();
+                    for (int j = 0; j < next.Count(); j++)
+                    {
+                        for (int k = 0; k < continuous.Count(); k++)
+                        {
+                            if (WordsOverlap(continuous[k], next[j]))
+                            {
+                                next[j].Continuous = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public List<Word> GetWords(string col, int colNum = 0)
