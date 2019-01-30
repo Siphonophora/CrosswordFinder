@@ -14,6 +14,8 @@ This is an attempted solution to the problem posed [on the 538 Riddler](https://
 >
 > Extra credit: The Sunday “New York Times” puzzle is 21-by-21. How many of those are there, with and without cheater squares?
 
+Note: The approach below finds puzzles without cheater squares only. In addition, the definition for a cheater square has to be modified slightly to fit the algorithm below. When 4 blocks are arranged like a capital T, the block in the middle would be considered a cheat because its Removal doesn't change the word count but does result in an invalid puzzle. 
+
 ## Approach
 
 Find Columns
