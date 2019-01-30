@@ -2,7 +2,19 @@
 
 This is an attempted solution to the problem posed [on the 538 Riddler](https://fivethirtyeight.com/features/how-many-crossword-puzzles-can-you-make/)
 
-# Approach
+## Prompt
+
+> 1. They are 15-by-15.
+> 2. They are rotationally symmetric — that is, if you turn the grid upside down it appears exactly the same.
+> 3. All the words — that is, all the horizontal and vertical sequences of white squares — must be at least three letters long. All the letters must appear in an “across” word and a “down” word.
+> 4. The grid must be entirely connected — that is, there can be no “islands” of white squares separated from the rest by black squares.
+> First question: How many such crossword grids are there?
+>
+> Second question: Crossword constructors do well to avoid using “cheater squares,” black squares whose addition makes some words shorter but does not change the puzzle’s total word count. How many grids are there without cheater squares?
+>
+> Extra credit: The Sunday “New York Times” puzzle is 21-by-21. How many of those are there, with and without cheater squares?
+
+## Approach
 
 Find Columns
 1. Find all the valid columns that can exist with at least one word and all words 3 letters or longer. 
@@ -19,7 +31,7 @@ Validate Puzzles - Puzzles are checked with three tests, run in order from faste
 2. No cheater blocks 'Searching for any L shaped sets of 3 blocks'. This relies on the above rule to eliminate cheaters like a single black in the corner. 
 3. White space much be contiguous. 
 
-# Optimization
+## Optimization
 
 This solution searches only for puzzles without cheater squares (see the prompt). There are several stages used to reduce the number of puzzles that are checked. 
 * For the 15x15, given the rotational symmetry, there are 113 squares to fill or about 10^35 choices. 
@@ -28,5 +40,5 @@ This solution searches only for puzzles without cheater squares (see the prompt)
 * If we consider only the possible order 1 puzzles (columns with no more than 1 black) as a starting point, there are about 124 million to start with. Of these, we can skip more than 90% through the 'slices' taken of the possible order 1 puzzle space. 
 * Iterating through the child columns prevents checking anything twice and allows stopping as soon as an invalid puzzle is found.
 
-# Results 
+## Results 
 TBD
