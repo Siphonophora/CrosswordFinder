@@ -1,0 +1,6 @@
+{"Timestamp":"2019-01-30T09:56:57.5407564-05:00","Level":"Information","MessageTemplate":"Startup Size: {Size} Slice {Slice}","Properties":{"Size":7,"Slice":2}}
+{"Timestamp":"2019-01-30T09:56:57.6387564-05:00","Level":"Information","MessageTemplate":"Skipped {SliceInfo} - Had {numSkipped} children","Properties":{"SliceInfo":"0","numSkipped":12}}
+{"Timestamp":"2019-01-30T09:56:57.6387564-05:00","Level":"Information","MessageTemplate":"Skipped {SliceInfo} - Had {numSkipped} children","Properties":{"SliceInfo":"1","numSkipped":12}}
+{"Timestamp":"2019-01-30T09:56:57.6507564-05:00","Level":"Information","MessageTemplate":"Finished"}
+{"Timestamp":"2019-01-30T09:56:57.6517564-05:00","Level":"Information","MessageTemplate":" Elapsed Seconds {sec} Approximate Progress {prog} Slice Info {sliceinfo} Total Slices {totalslices} Checked Slices {checkedslices} Skipped Slices {skippedslices} Puzzels Checked {puzzelschecked} Total Invalid Row: {totalinvalidrows} Total Cheater: {totalcheater} Total Not Continuous: {totalnotcontinuous} Total Valid: {totalvalid}","Properties":{"sec":0.02,"prog":1,"sliceinfo":"1","totalslices":24,"checkedslices":0,"skippedslices":24,"puzzelschecked":0,"totalinvalidrows":0,"totalcheater":0,"totalnotcontinuous":0,"totalvalid":0}}
+{"Timestamp":"2019-01-30T09:58:13.5797564-05:00","Level":"Information","MessageTemplate":"Application Exiting"}
