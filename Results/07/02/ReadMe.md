@@ -1,1 +1,0 @@
-There are only 2 options for the leftmost column in the n = 7 puzzle. Slice 2 was run to verify it found zero results. It confirms that the slices are not finding the blank puzzle. 

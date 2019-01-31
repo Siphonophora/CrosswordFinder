@@ -1,8 +1,0 @@
-{"Timestamp":"2019-01-30T09:42:39.7697564-05:00","Level":"Information","MessageTemplate":"Startup Size: {Size} Slice {Slice}","Properties":{"Size":7,"Slice":-1}}
-{"Timestamp":"2019-01-30T09:42:39.8817564-05:00","Level":"Information","MessageTemplate":"Skipped {SliceInfo} - Had {numSkipped} children","Properties":{"SliceInfo":"0,0,1","numSkipped":3}}
-{"Timestamp":"2019-01-30T09:42:39.8817564-05:00","Level":"Information","MessageTemplate":"Skipped {SliceInfo} - Had {numSkipped} children","Properties":{"SliceInfo":"0,1","numSkipped":6}}
-{"Timestamp":"2019-01-30T09:42:39.8817564-05:00","Level":"Information","MessageTemplate":"Skipped {SliceInfo} - Had {numSkipped} children","Properties":{"SliceInfo":"1,0,1","numSkipped":3}}
-{"Timestamp":"2019-01-30T09:42:39.8817564-05:00","Level":"Information","MessageTemplate":"Skipped {SliceInfo} - Had {numSkipped} children","Properties":{"SliceInfo":"1,1,1","numSkipped":3}}
-{"Timestamp":"2019-01-30T09:42:39.8847564-05:00","Level":"Information","MessageTemplate":"Finished"}
-{"Timestamp":"2019-01-30T09:42:39.8857564-05:00","Level":"Information","MessageTemplate":" Elapsed Seconds {sec} Approximate Progress {prog} Slice Info {sliceinfo} Total Slices {totalslices} Checked Slices {checkedslices} Skipped Slices {skippedslices} Puzzels Checked {puzzelschecked} Total Invalid Row: {totalinvalidrows} Total Cheater: {totalcheater} Total Not Continuous: {totalnotcontinuous} Total Valid: {totalvalid}","Properties":{"sec":0.018,"prog":0.75,"sliceinfo":"1,1,1","totalslices":24,"checkedslices":3,"skippedslices":15,"puzzelschecked":11,"totalinvalidrows":6,"totalcheater":0,"totalnotcontinuous":0,"totalvalid":9}}
-{"Timestamp":"2019-01-30T09:42:46.1417564-05:00","Level":"Information","MessageTemplate":"Application Exiting"}
