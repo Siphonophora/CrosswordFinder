@@ -13,7 +13,15 @@ namespace CrosswordLibrary
             ColumnSize = columnSize;
         }
 
-        public List<Column> Columns { get; set; } = new List<Column>();
+        public void Add(Column newCol)
+        {
+            Columns.Add(newCol);
+            ColumnDictionary.Add(newCol.ToString(), newCol);
+        }
+
+        public List<Column> Columns { get; private set; } = new List<Column>();
+        public Dictionary<string, Column> ColumnDictionary { get; private set; } = new Dictionary<string, Column>();
+
         public int ColumnSize { get; private set; }
 
         public void PrintInfo()

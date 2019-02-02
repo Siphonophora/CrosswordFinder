@@ -189,5 +189,48 @@ namespace CrosswordLibrary.UnitTests
             PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
             Assert.AreEqual(assert, puzzleChecker.PartialRowsAreValid(cols, true));
         }
+
+        [TestCase(false, "111111111111110", "111111111111111", "111111111111111", "111111111111110")]
+        public void PuzzleChecker_PartialRowsAreValid15_Correct(bool assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.PartialRowsAreValid(cols, false));
+        }
+
+        [TestCase(true, "111111111111111", "111111111111111", "111111111111111", "111111111111111")]
+        [TestCase(true, "111111111111111", "111111111111111", "111111111111111", "111110111111111")]
+        [TestCase(false, "111111111111111", "101111111111111", "111111111111111", "111111111111111")]
+        [TestCase(false, "111111111111111", "111111111111111", "111011111111111", "111111111111111")]
+        public void PuzzleChecker_PartialRowsAreValid15_LeftEdge_Correct(bool assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.PartialRowsAreValid(cols, true));
+        }
+
+
+        [TestCase(15, "111111111111110", "111111111111111", "111111111111111", "111111111111110")]
+        [TestCase(5, "10111", "10111")]
+        public void PuzzleChecker_GetRows_NumOfRows(int assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.GetRows(cols).Length);
+        }
+
+        [TestCase(4, "111111111111110", "111111111111111", "111111111111111", "111111111111110")]
+        [TestCase(2, "10111", "10111")]
+        public void PuzzleChecker_GetRows_LenOfRows(int assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.GetRows(cols)[0].Length);
+        }
+
+        [TestCase(4, "1111","111111111111110", "111111111111111", "111111111111111", "111111111111110")]
+        [TestCase(14, "0110", "111111111111110", "111111111111111", "111111111111111", "111111111111110")]
+        [TestCase(1, "00", "10111", "10111")]
+        public void PuzzleChecker_GetRows_ExactValue(int row, string assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.GetRows(cols)[row]);
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace CrosswordPuzzle
             //try
             //{
                Log.Logger.Information("Startup Size: {Size} Slice {Slice}", Size, Slice);
-                Analysis.Run(Size, Slice);
+                Analysis.Run(Size, Slice, folder);
 
             //}
             //catch (Exception e)

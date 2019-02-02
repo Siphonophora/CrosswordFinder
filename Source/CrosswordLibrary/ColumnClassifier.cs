@@ -26,7 +26,13 @@ namespace CrosswordLibrary
             for (int i = 0; i < ValidColumns.Columns.Count; i++)
             {
                 var thisCol = ValidColumns.Columns[i];
-                thisCol.Neighbors.Add(thisCol.ToString());
+                var selfpair = new string[] { thisCol.ToString(), thisCol.ToString() };
+
+                //Many columns can't be neighbors with themselves. 
+                if (puzzleChecker.IsCheater(selfpair) == false) 
+                {
+                    thisCol.Neighbors.Add(thisCol.ToString());
+                }
 
                 for (int j = i + 1; j < ValidColumns.Columns.Count; j++)
                 {

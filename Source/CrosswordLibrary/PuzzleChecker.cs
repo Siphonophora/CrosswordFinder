@@ -13,8 +13,8 @@ namespace CrosswordLibrary
         {
             Size = size;
             Mid = (Size + 1) / 2;
-            LeftColSetSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2) + 1;
-            CentColSetSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2);
+            LeftPartSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2) + 1;
+            CentPartSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2);
         }
 
         public Hashtable ColumnHashtable { get; set; } = new Hashtable();
@@ -23,8 +23,8 @@ namespace CrosswordLibrary
         public long NotContiuousCount { get; set; } = 0;
         public int Size { get; private set; }
         public int Mid { get; private set; }
-        public int LeftColSetSize { get; private set; }
-        public int CentColSetSize { get; private set; }
+        public int LeftPartSize { get; private set; }
+        public int CentPartSize { get; private set; }
 
 
 
@@ -255,9 +255,9 @@ namespace CrosswordLibrary
         public string[] GetRows(string[] cols)
         {
 
-            var rows = new string[cols.Length];
+            var rows = new string[cols[0].Length];
             var sb = new StringBuilder(cols.Length);
-            for (int i = 0; i < cols.Length; i++)
+            for (int i = 0; i < cols[0].Length; i++)
             {
                 for (int j = 0; j < cols.Length; j++)
                 {

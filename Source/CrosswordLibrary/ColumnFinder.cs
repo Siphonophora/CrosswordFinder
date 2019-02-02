@@ -51,7 +51,7 @@ namespace CrosswordLibrary
                 if (newColumn.IsValid())
                 {
                     ColumnCells.Add(newColumn.Cells);
-                    ValidColumns.Columns.Add(newColumn);
+                    ValidColumns.Add(newColumn);
                     newColumn.Print(Print);
                 }
             }

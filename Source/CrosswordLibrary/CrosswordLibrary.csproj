@@ -48,10 +48,15 @@
     <Compile Include="ColumnClassifier.cs" />
     <Compile Include="ColumnFinder.cs" />
     <Compile Include="ColumnGroup.cs" />
+    <Compile Include="ColumnPickerCenter.cs" />
+    <Compile Include="ColumnPickerLeft.cs" />
     <Compile Include="Combinator.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="IColumnPicker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Puzzle.cs" />
     <Compile Include="PuzzleChecker.cs" />
+    <Compile Include="PuzzlePartFinder.cs" />
     <Compile Include="PuzzleFinder.cs" />
   </ItemGroup>
   <ItemGroup>
