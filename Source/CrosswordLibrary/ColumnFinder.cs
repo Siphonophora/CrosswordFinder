@@ -12,11 +12,11 @@ namespace CrosswordLibrary
         public bool Print { get; }
         public bool SearchComplete { get; set; } = true;
         public List<bool[]> ColumnCells { get; set; } = new List<bool[]>();
-        public ColumnSet ValidColumns { get; set; } 
+        public ColumnGroup ValidColumns { get; set; } 
 
         public ColumnFinder(int columnSize, bool print = false)
         {
-            ValidColumns = new ColumnSet(columnSize);
+            ValidColumns = new ColumnGroup(columnSize);
             Print = print;
             var cells = new bool[columnSize];
             

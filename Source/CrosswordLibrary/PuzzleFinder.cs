@@ -10,7 +10,7 @@ namespace CrosswordLibrary
 {
     public class PuzzleFinder
     {
-        public ColumnSet ValidColumns { get; private set; }
+        public ColumnGroup ValidColumns { get; private set; }
         public DateTime StartTime { get; set; } = DateTime.Now;
         public int SearchLimit { get; }
         public int PuzzleSize { get; private set; }
@@ -38,7 +38,7 @@ namespace CrosswordLibrary
         /// <param name="searchLimit"></param>
         /// <param name="print"></param>
         /// <param name="numOfSlices">This is how many columns deep we will 'slice' the solving into</param>
-        public PuzzleFinder(ColumnSet validColumns, int searchLimit, bool print, int numOfSlices, int singleSliceToCheck)
+        public PuzzleFinder(ColumnGroup validColumns, int searchLimit, bool print, int numOfSlices, int singleSliceToCheck)
         {
 
             ValidColumns = validColumns;
@@ -54,11 +54,9 @@ namespace CrosswordLibrary
                 throw new ArgumentException("Puzzle size may not be even");
             }
 
-            PuzzleChecker = new PuzzleChecker
+            PuzzleChecker = new PuzzleChecker(PuzzleSize)
             {
-                ColumnHashtable = ColumnHashtable,
-                Size = PuzzleSize,
-                Mid = (PuzzleSize + 1) / 2
+                ColumnHashtable = ColumnHashtable
             };
 
             //ValidColumns.PrintInfo();
@@ -314,28 +312,29 @@ namespace CrosswordLibrary
                 if (currentCol.Order == order) //Only check current order columns
                 {
 
-                    var children = currentCol.Children;
+                    //var children = currentCol.Children;
 
-                    foreach (var child in children)
-                    {
-                        var childCol = (Column)ColumnHashtable[child];
+                    //foreach (var child in children)
+                    //{
+                    //    var childCol = (Column)ColumnHashtable[child];
 
 
-                        if ((i <= 2 && childCol.ValidLeftColumn)
-                            || (i > 2 && i < orderPuzzle.Columns.Length - 1)
-                           )
-                        {
-                            possibleCols.Add(child);
-                        }
-                        else if (i == orderPuzzle.Columns.Length - 1 && childCol.CanBeCenterColumn())
-                        {
-                            //The symetric versio might not be valid so, check that it is
-                            if (ColumnHashtable.ContainsKey(childCol.SymetricString))
-                            {
-                                possibleCols.Add(child);
-                            }
-                        }
-                    }
+                    //    if ((i <= 2 && childCol.ValidLeftColumn)
+                    //        || (i > 2 && i < orderPuzzle.Columns.Length - 1)
+                    //       )
+                    //    {
+                    //        possibleCols.Add(child);
+                    //    }
+                    //    else if (i == orderPuzzle.Columns.Length - 1 && childCol.CanBeCenterColumn())
+                    //    {
+                    //        //The symetric versio might not be valid so, check that it is
+                    //        throw new NotImplementedException();
+                    //        //if (ColumnHashtable.ContainsKey(childCol.SymetricString))
+                    //        //{
+                    //        //    possibleCols.Add(child);
+                    //        //}
+                    //    }
+                    //}
                 }
                 options[i] = possibleCols.ToArray();
             }
@@ -348,7 +347,7 @@ namespace CrosswordLibrary
 
         private Puzzle GetRootTable()
         {
-            var rootColumn = ValidColumns.GetColumnsByOrder(0).First().ToString();
+            var rootColumn = ValidColumns.Columns.Where(x => x.Order == 0).First().ToString();
 
             Puzzle puzzle = new Puzzle(PuzzleSize);
 

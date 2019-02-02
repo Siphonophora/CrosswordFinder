@@ -14,9 +14,11 @@ namespace CrosswordPuzzle
             Console.WindowWidth = 200;
             Console.WindowHeight = 70;
 
-            var cf15 = new ColumnFinder(size);
-            var cc15 = new ColumnClassifier(cf15.ValidColumns);
-            var pf15 = new PuzzleFinder(cf15.ValidColumns, size + 1, true, (size - 1) / 2, slice);
+            var cf = new ColumnFinder(size);
+            var cc = new ColumnClassifier(cf.ValidColumns);
+            //var pf = new PuzzleFinder(cf.ValidColumns, size + 1, true, (size - 1) / 2, slice);
+
+            Console.ReadKey();
         }
     }
 }

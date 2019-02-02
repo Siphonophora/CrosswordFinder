@@ -68,28 +68,20 @@ namespace CrosswordLibrary.UnitTests
         }
 
         [TestCase(true, new bool[5] { true, true, true, true, true })]
-        [TestCase(true, new bool[5] { false, true, true, true, true })]
-        [TestCase(true, new bool[5] { false, false, true, true, true })]
-        [TestCase(true, new bool[5] { false, false, false, true, true })]
+        [TestCase(true, new bool[5] { false, true, true, true, false })]
+        [TestCase(true, new bool[5] { false, false, true, false, false })]
+        [TestCase(true, new bool[5] { false, false, false, false, false })]
+        [TestCase(false, new bool[5] { false, true, true, true, true })]
+        [TestCase(false, new bool[5] { false, false, true, true, true })]
+        [TestCase(false, new bool[5] { false, false, false, true, true })]
         [TestCase(false, new bool[5] { true, true, true, true, false })]
         [TestCase(false, new bool[5] { true, true, true, false, false })]
-        [TestCase(false, new bool[5] { false, true, true, true, false })]
         [TestCase(false, new bool[5] { false, true, false, false, false })]
         [TestCase(false, new bool[5] { false, false, false, true, false })]
         public void Column_CenterEligible_IsCorrect(bool eligible, bool[] cells)
         {
             var c = new Column(cells);
             Assert.AreEqual(eligible, c.CanBeCenterColumn());
-        }
-
-        [TestCase("11111", new bool[5] { true, true, true, true, true })]
-        [TestCase("01110", new bool[5] { false, true, true, true, true })]
-        [TestCase("00100", new bool[5] { false, false, true, true, true })]
-        [TestCase("00000", new bool[5] { false, false, false, true, true })]
-        public void Column_ToStringSymetric_IsCorrect(string symetric, bool[] cells)
-        {
-            var c = new Column(cells);
-            Assert.AreEqual(symetric, c.SymetricString);
         }
 
         [TestCase(true, new bool[5] { true, true, true, true, true })]

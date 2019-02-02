@@ -30,27 +30,28 @@ namespace CrosswordPuzzle
 
             Serilog.Debugging.SelfLog.Enable(Console.Error);
             Log.Logger = new LoggerConfiguration()
-            //.WriteTo.Console()
+            .WriteTo.Console()
             .WriteTo.File($"{logFolder}\\log.txt", rollingInterval: RollingInterval.Day)
             .WriteTo.File(new JsonFormatter(), $"{logFolder}\\log.json", rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
 
             //**************  MainProgram ********************************
-            try
-            {
-                Log.Logger.Information("Startup Size: {Size} Slice {Slice}", Size, Slice);
+            //try
+            //{
+               Log.Logger.Information("Startup Size: {Size} Slice {Slice}", Size, Slice);
                 Analysis.Run(Size, Slice);
-            }
-            catch (Exception e)
-            {
-                Log.Logger.Fatal(e, "An unhandled excpetion terminated the program");
-            }
-            finally
-            {
+
+            //}
+            //catch (Exception e)
+            //{
+                //Log.Logger.Fatal(e, "An unhandled excpetion terminated the program");
+            //}
+            //finally
+            //{
                 Log.Logger.Information("Application Exiting");
                 Log.CloseAndFlush();
-            }
+            //}
         }
     }
 }

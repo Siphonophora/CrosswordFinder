@@ -9,12 +9,24 @@ namespace CrosswordLibrary
 {
     public class PuzzleChecker
     {
+        public PuzzleChecker(int size)
+        {
+            Size = size;
+            Mid = (Size + 1) / 2;
+            LeftColSetSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2) + 1;
+            CentColSetSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2);
+        }
+
         public Hashtable ColumnHashtable { get; set; } = new Hashtable();
         public long InvalidRowCount { get; set; } = 0;
         public long CheaterCount { get; set; } = 0;
         public long NotContiuousCount { get; set; } = 0;
-        public int Size { get; set; } = 0;
-        public int Mid { get; set; } = 0;
+        public int Size { get; private set; }
+        public int Mid { get; private set; }
+        public int LeftColSetSize { get; private set; }
+        public int CentColSetSize { get; private set; }
+
+
 
         /// <summary>
         /// 
@@ -46,13 +58,13 @@ namespace CrosswordLibrary
 
             }
 
-            if (HasCheater(cols))
+            if (IsCheater(cols))
             {
                 CheaterCount++;
                 return false;
             }
 
-            if (NotContinous(cols))
+            if (!IsContinuous(cols))
             {
                 NotContiuousCount++;
                 //Console.WriteLine("NON Continuous Example");
@@ -69,7 +81,7 @@ namespace CrosswordLibrary
         /// </summary>
         /// <param name="cols"></param>
         /// <returns></returns>
-        public bool NotContinous(string[] cols)
+        public bool IsContinuous(string[] cols)
         {
             var words = new List<Word>();
             var colNum = cols.Length;
@@ -93,10 +105,10 @@ namespace CrosswordLibrary
 
                 SearchContinuous(words, colNum, down);
 
-                //If there are no non continuous in any row after the up search, then its non continuous
+                //If there are no non continuous in any row after the up search, then it is continuous
                 if (words.Where(x => x.Continuous == false).Any() == false)
                 {
-                    return false;
+                    return true;
                 }
 
                 down = !down;
@@ -104,7 +116,7 @@ namespace CrosswordLibrary
             } while (newContinuous > 0);
 
             //If we didn't
-            return true;
+            return false;
         }
 
         private void SearchContinuous(List<Word> words, int colNum, bool down)
@@ -198,6 +210,7 @@ namespace CrosswordLibrary
         {
             public int Start;
             public int Stop;
+            public int Len => Stop - Start + 1;
             public int Col;
             public bool Continuous; //Default is false;
 
@@ -220,7 +233,8 @@ namespace CrosswordLibrary
                 }
                 else
                 {
-                    cols[i] = ((Column)ColumnHashtable[puzzle.Columns[i]]).ToStringSymetric();
+                    throw new NotImplementedException();
+                    //cols[i] = ((Column)ColumnHashtable[puzzle.Columns[i]]).ToStringSymetric();
                 }
             }
 
@@ -242,7 +256,7 @@ namespace CrosswordLibrary
         {
 
             var rows = new string[cols.Length];
-            var sb = new StringBuilder(Size);
+            var sb = new StringBuilder(cols.Length);
             for (int i = 0; i < cols.Length; i++)
             {
                 for (int j = 0; j < cols.Length; j++)
@@ -256,9 +270,14 @@ namespace CrosswordLibrary
             return rows;
         }
 
-        public bool HasCheater(string[] cols)
+        public bool IsCheater(string[] cols)
         {
-            for (int i = 0; i < Mid; i++)
+            //When handed a full puzzle we check only to the midpoint, otherwise check it all
+            var numToCheck = cols.Length == Size ? Mid : cols.Length;
+            var widthToCheck = cols.Length == Size ? Size : cols.Length;
+
+
+            for (int i = 0; i < numToCheck; i++)
             {
                 for (int j = 0; j < cols[0].Length; j++)
                 {
@@ -281,7 +300,7 @@ namespace CrosswordLibrary
                         }
                     }
 
-                    if (i < Size - 1)
+                    if (i < widthToCheck - 1)
                     {
                         if (j > 0)
                         {
@@ -304,6 +323,27 @@ namespace CrosswordLibrary
             char[] charArray = s.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);
+        }
+
+        public bool PartialRowsAreValid(string[] cols, bool leftEdge)
+        {
+            var rows = GetRows(cols);
+            foreach (var row in rows)
+            {
+                var words = GetWords(row);
+
+                //Words are invalid if they are < 3 and contained entirely in the row OR a left edge.
+                var errors = words.Where(x => x.Len < 3 
+                                              && ( x.Start > 0 || leftEdge )
+                                              && x.Stop < cols.Length - 1
+                                        ).Count();
+                if(errors > 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void Print(Puzzle candidate)

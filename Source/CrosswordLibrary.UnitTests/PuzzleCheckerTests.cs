@@ -18,13 +18,8 @@ namespace CrosswordLibrary.UnitTests
         [TestCase("01111", "01111", "11111", "11111", "11111")]
         public void PuzzleChecker_Cheater_False(params string[] cols)
         {
-            int puzzleSize = cols[0].Length;
-            PuzzleChecker puzzleChecker = new PuzzleChecker
-            {
-                Size = puzzleSize,
-                Mid = (puzzleSize + 1) / 2
-            };
-            Assert.IsFalse(puzzleChecker.HasCheater(cols));
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.IsFalse(puzzleChecker.IsCheater(cols));
         }
 
         [TestCase("00111", "01111", "11111", "11111", "11111")]
@@ -42,13 +37,8 @@ namespace CrosswordLibrary.UnitTests
         [TestCase("11111", "11110", "11100", "11111", "11111")]
         public void PuzzleChecker_Cheater_True(params string[] cols)
         {
-            int puzzleSize = cols[0].Length;
-            PuzzleChecker puzzleChecker = new PuzzleChecker
-            {
-                Size = puzzleSize,
-                Mid = (puzzleSize + 1) / 2
-            };
-            Assert.IsTrue(puzzleChecker.HasCheater(cols));
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.IsTrue(puzzleChecker.IsCheater(cols));
         }
 
 
@@ -65,11 +55,7 @@ namespace CrosswordLibrary.UnitTests
         public void PuzzleChecker_NonContinous_True(bool assert, int a1, int a2, int b1, int b2)
         {
             int puzzleSize = 5;
-            PuzzleChecker puzzleChecker = new PuzzleChecker
-            {
-                Size = puzzleSize,
-                Mid = (puzzleSize + 1) / 2
-            };
+            PuzzleChecker puzzleChecker = new PuzzleChecker(puzzleSize);
             Assert.AreEqual(assert, puzzleChecker.WordsOverlap(new PuzzleChecker.Word() { Start = a1, Stop = a2 }, new PuzzleChecker.Word() { Start = b1, Stop = b2 }));
         }
 
@@ -82,13 +68,8 @@ namespace CrosswordLibrary.UnitTests
         [TestCase("10111", "01111", "11111", "11111", "11111")]
         public void PuzzleChecker_NonContinous_True(params string[] cols)
         {
-            int puzzleSize = cols[0].Length;
-            PuzzleChecker puzzleChecker = new PuzzleChecker
-            {
-                Size = puzzleSize,
-                Mid = (puzzleSize + 1) / 2
-            };
-            Assert.IsTrue(puzzleChecker.NotContinous(cols));
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.IsFalse(puzzleChecker.IsContinuous(cols));
         }
 
         [TestCase("11111", "11111", "11111", "11111", "11111")]
@@ -100,17 +81,12 @@ namespace CrosswordLibrary.UnitTests
         [TestCase("01111", "10111", "11011", "11101", "11111")]
         public void PuzzleChecker_NonContinous_False(params string[] cols)
         {
-            int puzzleSize = cols[0].Length;
-            PuzzleChecker puzzleChecker = new PuzzleChecker
-            {
-                Size = puzzleSize,
-                Mid = (puzzleSize + 1) / 2
-            };
-            Assert.IsFalse(puzzleChecker.NotContinous(cols));
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.IsTrue(puzzleChecker.IsContinuous(cols));
         }
 
 
-        [TestCase(    "111111111111111",
+        [TestCase("111111111111111",
                       "111111111111111",
                       "111111111111111",
                       "111111111111111",
@@ -125,7 +101,7 @@ namespace CrosswordLibrary.UnitTests
                       "111111111111111",
                       "111111111111111",
                       "111111111111111")]
-        [TestCase(    "111111111111111",
+        [TestCase("111111111111111",
                       "111111111111111",
                       "111111111111111",
                       "111111111111111",
@@ -141,7 +117,7 @@ namespace CrosswordLibrary.UnitTests
                       "111111111111111",
                       "101111111111111")]
 
-        [TestCase(    "101111011110111", // Trying to make one shaped like a maze      //" 0    0    0   "
+        [TestCase("101111011110111", // Trying to make one shaped like a maze      //" 0    0    0   "
                       "101001010010100",                                               //" 0 00 0 00 0 00"
                       "101001010010100",                                               //" 0 00 0 00 0 00"
                       "101001010010100",                                               //" 0 00 0 00 0 00"
@@ -158,13 +134,60 @@ namespace CrosswordLibrary.UnitTests
                       "111101111011110")]                                              //"    0    0    0"
         public void PuzzleChecker_NonContinousRealWorld_False(params string[] cols)
         {
-            int puzzleSize = cols[0].Length;
-            PuzzleChecker puzzleChecker = new PuzzleChecker
-            {
-                Size = puzzleSize,
-                Mid = (puzzleSize + 1) / 2
-            };
-            Assert.IsFalse(puzzleChecker.NotContinous(cols));
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.IsTrue(puzzleChecker.IsContinuous(cols));
+        }
+
+
+        [TestCase(false, "11111", "11111")]
+        [TestCase(false, "11111", "01111")]
+        [TestCase(false, "11011", "11011")]
+        [TestCase(false, "11111", "11101")]
+        [TestCase(false, "01111", "10111")]
+        [TestCase(true, "00111", "10111")]
+        [TestCase(true, "01111", "00111")]
+        [TestCase(true, "10011", "11011")]
+        [TestCase(true, "11001", "11011")]
+        [TestCase(true, "11011", "10011")]
+        [TestCase(true, "11011", "11001")]
+        [TestCase(true, "11100", "11110")]
+        [TestCase(true, "11110", "11100")]
+        public void PuzzleChecker_IsCheaterForNeighbors_Correct(bool assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.IsCheater(cols));
+        }
+
+        //Shared partial rows
+        [TestCase(true, "11111", "11111", "11111", "11111")]
+        [TestCase(true, "01111", "01111", "01111", "01111")]
+        [TestCase(false, "11011", "11111", "11111", "11011")]
+        //Different 
+        [TestCase(true, "01111", "10111", "11011", "11100")]
+        [TestCase(true, "10111", "10111", "10101", "11101")]
+        [TestCase(true, "11111", "10111", "11111", "11111")]
+        [TestCase(true, "11111", "10111", "10111", "11111")]
+        [TestCase(true, "11111", "11111", "11011", "11111")]
+        public void PuzzleChecker_PartialRowsAreValid_Correct(bool assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.PartialRowsAreValid(cols, false));
+        }
+
+        //Shared partial rows
+        [TestCase(true, "11111", "11111", "11111", "11111")]
+        [TestCase(true, "01111", "01111", "01111", "01111")]
+        [TestCase(false, "11011", "11111", "11111", "11011")]
+        //Different 
+        [TestCase(false, "01111", "10111", "11011", "11100")]
+        [TestCase(false, "10111", "10111", "10101", "11101")]
+        [TestCase(false, "11111", "10111", "11111", "11111")]
+        [TestCase(false, "11111", "10111", "10111", "11111")]
+        [TestCase(false, "11111", "11111", "11011", "11111")]
+        public void PuzzleChecker_PartialRowsAreValid_LeftEdge_Correct(bool assert, params string[] cols)
+        {
+            PuzzleChecker puzzleChecker = new PuzzleChecker(cols[0].Length);
+            Assert.AreEqual(assert, puzzleChecker.PartialRowsAreValid(cols, true));
         }
     }
 }

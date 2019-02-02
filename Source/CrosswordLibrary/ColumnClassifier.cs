@@ -8,41 +8,46 @@ namespace CrosswordLibrary
 {
     public class ColumnClassifier
     {
-        public ColumnClassifier(ColumnSet validColumns)
+        public ColumnClassifier(ColumnGroup validColumns)
         {
             ValidColumns = validColumns ?? throw new ArgumentNullException(nameof(validColumns));
 
             Analyze();
+            PrintClassifications();
         }
-        public ColumnSet ValidColumns { get; set; }
+
+        public ColumnGroup ValidColumns { get; set; }
 
         private void Analyze()
         {
-            for (int i = 0; i < ValidColumns.Columns[0].Cells.Length; i++)
+            
+            //Find Neighbors
+            var puzzleChecker = new PuzzleChecker(ValidColumns.Columns[0].Cells.Length);
+            for (int i = 0; i < ValidColumns.Columns.Count; i++)
             {
-                var parentOrder = ValidColumns.GetColumnsByOrder(i);
-                var childOrder = ValidColumns.GetColumnsByOrder(i + 1);
-                if(parentOrder.Count == 0 || childOrder.Count == 0)
-                {
-                    break;
-                }
+                var thisCol = ValidColumns.Columns[i];
+                thisCol.Neighbors.Add(thisCol.ToString());
 
-                foreach (var child in childOrder)
+                for (int j = i + 1; j < ValidColumns.Columns.Count; j++)
                 {
-                    foreach (var parent in parentOrder)
+                    var chckCol = ValidColumns.Columns[j];
+                    var pair = new string[] { thisCol.ToString(), chckCol.ToString() };
+                    if (puzzleChecker.IsCheater(pair) == false)
                     {
-                        if(ValidLink(parent.ToString(), child.ToString()))
-                        {
-                            parent.Children.Add(child.ToString());
-                            child.Parent = parent.ToString();
-                            break;
-                        }
+                        chckCol.Neighbors.Add(thisCol.ToString());
+                        thisCol.Neighbors.Add(chckCol.ToString());
+                    }
+
+                    //Check subsequent
+                    if(thisCol.ToString() == chckCol.ToStringReverse())
+                    {
+                        thisCol.HasFlippedTwin = true;
+                        chckCol.HasFlippedTwin = true;
+
+                        thisCol.IsPrimaryTwin = true;
                     }
                 }
             }
-
-
-            PrintClassifications();
         }
 
         private bool ValidLink(string parent, string child)
@@ -54,10 +59,10 @@ namespace CrosswordLibrary
                 {
                     return false;
                 }
-                if(parent[i] == '1' && child[i] == '0')
+                if (parent[i] == '1' && child[i] == '0')
                 {
                     changes++;
-                    if(changes > 1)
+                    if (changes > 1)
                     {
                         return false;
                     }
@@ -79,18 +84,9 @@ namespace CrosswordLibrary
 
             Console.WriteLine();
             Console.WriteLine($"Total Columns: {ValidColumns.Columns.Count}");
-            //Console.WriteLine($"Symetric Columns: {ValidColumns.Columns.Where(x => x.IsSymetric).Count()}");
+            Console.WriteLine($"Center Columns: {ValidColumns.Columns.Where(x => x.IsSymetric).Count()}");
             Console.WriteLine($"ValidLeftColumn Columns: {ValidColumns.Columns.Where(x => x.ValidLeftColumn).Count()}");
-            Console.WriteLine();
-            Console.WriteLine($"NoBlackEdges Columns: {ValidColumns.Columns.Where(x => x.NoBlackEdges).Count()}");
-
-            Console.WriteLine();
-            Console.WriteLine("Possible base set");
-            int moovlc = ValidColumns.Columns.Where(x => x.ValidLeftColumn).Max(y => y.Order);
-            Console.WriteLine($"Max Order of ValidLeftColumns: {moovlc}");
-            Console.WriteLine($"Total Columns: {ValidColumns.Columns.Where(x =>  x.Order <= moovlc).Count()}");
-            //Console.WriteLine($"Symetric Columns: {ValidColumns.Columns.Where(x => x.IsSymetric && x.Order <= moovlc).Count()}");
-            Console.WriteLine($"ValidLeftColumn Columns: {ValidColumns.Columns.Where(x => x.ValidLeftColumn && x.Order <= moovlc).Count()}");
+            Console.WriteLine($"Avg Neighbors: {ValidColumns.Columns.Average(x => x.Neighbors.Count).ToString("0")}");
             Console.WriteLine();
         }
     }

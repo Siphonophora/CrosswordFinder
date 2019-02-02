@@ -11,17 +11,15 @@ namespace CrosswordLibrary
         public Column(bool[] cells)
         {
             Cells = cells ?? throw new ArgumentNullException(nameof(cells));
-
-            SymetricString = ToStringSymetric();
         }
 
         /// <summary>
         /// Boolean array of cells. Letters = true, Black = false
         /// </summary>
         public bool[] Cells { get; private set; }
-        public string Parent { get; set; }
-        public string SymetricString { get; set; }
-        public List<string> Children { get; set; } = new List<string>();
+        public List<string> Neighbors { get; set; } = new List<string>();
+        public bool HasFlippedTwin { get; set; }
+        public bool IsPrimaryTwin { get; set; }
 
 
         public bool IsValid()
@@ -67,6 +65,11 @@ namespace CrosswordLibrary
             }
 
             return true;
+        }
+
+        internal string ToStringReverse()
+        {
+            return new String(ToString().Reverse().ToArray());
         }
 
         public int WordCount()
@@ -136,14 +139,11 @@ namespace CrosswordLibrary
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"{ToString()} {Order.ToString("00")} " +
-                             $"{Parent ?? new string(' ', Cells.Length)} " +
-                             $"{(ChangedCell() == -1 ? "  " : ChangedCell().ToString("00"))} " +
-                             $"{(Children.Count > 0 ? Children.Count.ToString("00") : "  ")} " +
-                             //$" {IsSymetric.ToString().PadLeft(5)}" +
                              $" {NoBlackEdges.ToString().PadLeft(5)}" +
                              $" {MaxBlackCellSequence().ToString().PadLeft(2)}" +
                              $" {ValidLeftColumn.ToString().PadLeft(5)}" +
-                             $" {WordCount()}" 
+                             $" {WordCount()}" +
+                             $" {(Neighbors.Count > 0 ? Neighbors.Count.ToString("00") : "  ")} "
                              );
         }
 
@@ -162,48 +162,15 @@ namespace CrosswordLibrary
             return s;
         }
 
-        /// <summary>
-        /// String from cells. Letters = 1, Black = 0
-        /// </summary>
-        public string ToStringSymetric()
-        {
-            string s = "";
-            for (int i = 0; i < Cells.Length; i++)
-            {
-                int j = (Cells.Length + 1 )/ 2 - i > 0 ? i : Cells.Length - 1 - i;
-                s += Cells[j] ? "1" : "0";
-            }
-            return s;
-        }
-
-        //public bool IsSymetric => ToString() == new String(ToString().Reverse().ToArray());
+        public bool IsSymetric => ToString() == new String(ToString().Reverse().ToArray());
 
         public bool CanBeCenterColumn()
         {
-            int mid = (Cells.Length + 1) / 2;
-
-            for (int i = mid; i < Cells.Length; i++)
-            {
-                if(Cells[i] == false)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return IsSymetric;
         }
 
         public bool NoBlackEdges => Cells[0] == true && Cells.Last() == true;
 
         public bool ValidLeftColumn => NoBlackEdges && MaxBlackCellSequence() <= 1;
-
-        public int ChangedCell()
-        {
-            if (Parent == null)
-            {
-                return -1;
-            }
-
-            return ToString().Zip(Parent, (c1, c2) => c1 == c2).TakeWhile(b => b).Count();
-        }
     }
 }
