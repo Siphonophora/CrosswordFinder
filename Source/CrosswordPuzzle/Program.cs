@@ -36,10 +36,10 @@ namespace CrosswordPuzzle
 
 
             //**************  MainProgram ********************************
+                Analysis.Run(Size, Slice, folder);
             try
             {
                 Log.Logger.Information("Startup Size: {Size} Slice {Slice}", Size, Slice);
-                Analysis.Run(Size, Slice, folder);
             }
             catch (Exception e)
             {

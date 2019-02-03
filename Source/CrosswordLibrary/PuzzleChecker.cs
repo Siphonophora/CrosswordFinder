@@ -17,7 +17,6 @@ namespace CrosswordLibrary
             CentPartSize = Mid % 2 != 0 ? (Mid + 1) / 2 : (Mid / 2);
         }
 
-        public Hashtable ColumnHashtable { get; set; } = new Hashtable();
         public Dictionary<string, string> ReverseDictionary { get; set; } = new Dictionary<string, string>();
         public long InvalidRowCount { get; set; } = 0;
         public long CheaterCount { get; set; } = 0;
@@ -44,7 +43,7 @@ namespace CrosswordLibrary
             return IsValidPuzzle(validColumns, validLeftColumnsDict, cols);
         }
 
-        public bool IsValidPuzzle(Dictionary<string, Column> validColumns, Dictionary<string, Column> validLeftColumnsDict, string[] cols)
+        public bool IsValidPuzzle(Dictionary<string, Column> validColumnsDict, Dictionary<string, Column> validLeftColumnsDict, string[] cols)
         {
             PuzzlesChecked++;
 
@@ -61,12 +60,11 @@ namespace CrosswordLibrary
                         return false;
                     }
                 }
-                else if (validColumns.ContainsKey(row) == false)
+                else if (validColumnsDict.ContainsKey(row) == false)
                 {
                     InvalidRowCount++;
                     return false;
                 }
-
             }
 
             if (IsCheater(cols))
@@ -78,9 +76,6 @@ namespace CrosswordLibrary
             if (!IsContinuous(cols))
             {
                 NotContiuousCount++;
-                //Console.WriteLine("NON Continuous Example");
-                //Print(candidate);
-                //Console.ReadKey();
                 return false;
             }
 

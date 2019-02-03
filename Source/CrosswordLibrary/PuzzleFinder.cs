@@ -84,11 +84,11 @@ namespace CrosswordLibrary
                     cols = AddCenterParts(cols, leftPuzzleParts[0].Length, centerPuzzleParts[j]);
                     if (pc.IsValidPuzzle(validColumnsDict, validLeftColumnsDict, cols))
                     {
-                        LastValidPuzzle = cols;
+                        LastValidPuzzle = cols.ToArray(); //Reuse of cols requires making a new array
                         stats.Valid++;
                     }
 
-                    if (pc.PuzzlesChecked % 10_000_000 == 0)
+                    if (pc.PuzzlesChecked % 1_000_000 == 0)
                     {
                         WriteStatus(pc);
                         pc.Print(LastValidPuzzle);
