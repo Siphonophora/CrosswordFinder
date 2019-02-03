@@ -41,9 +41,11 @@ namespace CrosswordLibrary
                    && validFiles.Where(x => Path.GetFileNameWithoutExtension(x) == Path.GetFileNameWithoutExtension(leftFile)).Count() == 0
                   )
                 {
+                    var start = DateTime.Now;
                     File.Create($"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.inprocess");
                     var stats = FindPuzzels(pc, validColumns, leftFile, cntrFiles.Where(x => Path.GetFileName(x) == Path.GetFileName(leftFile)).First(), validDir);
                     Console.WriteLine($"Done With {Path.GetFileName(leftFile)}. File {i} of {leftFiles.Count()}");
+                    stats.Seconds = (DateTime.Now - StartTime).TotalSeconds;
                     File.WriteAllText($"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.json", JsonConvert.SerializeObject(stats, Formatting.Indented));
                     LogStatus(pc);
                 }
@@ -74,6 +76,7 @@ namespace CrosswordLibrary
                 validColumnsDict.Add(ValidColumns.Columns[i].ToString(), ValidColumns.Columns[i]);
             }
 
+
             for (int i = 0; i < leftPuzzleParts.Count; i++)
             {
                 var cols = ColsFromLeftParts(leftPuzzleParts[i]);
@@ -88,8 +91,14 @@ namespace CrosswordLibrary
                         stats.Valid++;
                     }
 
-                    if (pc.PuzzlesChecked % 1_000_000 == 0)
+                    if (pc.PuzzlesChecked % 10_000_000 == 0)
                     {
+                        Log.Logger.Information("Checking {i} of {nLeft} left * {j} of {nRight} right = {checked} of {Checks} for file {file}"
+                            , i, leftPuzzleParts.Count
+                            , j, centerPuzzleParts.Count
+                            , stats.Checked
+                            , (long)leftPuzzleParts.Count * (long)centerPuzzleParts.Count
+                            , stats.Label);
                         WriteStatus(pc);
                         pc.Print(LastValidPuzzle);
                     }
@@ -101,8 +110,10 @@ namespace CrosswordLibrary
         public struct PuzzleCheckStats
         {
             public string Label;
-            public int Valid;
-            public int Checked;
+            public long Valid;
+            public long Checked;
+
+            public double Seconds { get; internal set; }
         }
 
         private string[] ColsFromLeftParts(string[] left)

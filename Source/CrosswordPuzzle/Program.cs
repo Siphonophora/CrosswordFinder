@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Serilog;
 using Serilog.Formatting.Json;
+using System.Configuration;
 
 
 namespace CrosswordPuzzle
@@ -21,7 +22,7 @@ namespace CrosswordPuzzle
             {
                 int.TryParse(args[1] ?? null, out Slice);
             }
-            string folder = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\CrosswordSearch\\" +
+            string folder = $"{ConfigurationManager.AppSettings["WorkingDirectory"]}\\CrosswordSearch\\" +
                 $"{Size}\\{(ProcessOnceSlice ? Slice.ToString("00") : "All")}";
 
             //**************  Logger Setup ********************************
@@ -30,7 +31,7 @@ namespace CrosswordPuzzle
 
             Serilog.Debugging.SelfLog.Enable(Console.Error);
             Log.Logger = new LoggerConfiguration()
-            //.WriteTo.Console()
+            .WriteTo.Console()
             .WriteTo.File(new JsonFormatter(), $"{logFolder}\\log {DateTime.Now.ToString("yyyyMMdd HHmmss")} {sessionGUID.Substring(0,5)}.json", rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
