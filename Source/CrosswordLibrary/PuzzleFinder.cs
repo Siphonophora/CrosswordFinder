@@ -91,7 +91,7 @@ namespace CrosswordLibrary
                         stats.Valid++;
                     }
 
-                    if (pc.PuzzlesChecked % 10_000_000 == 0)
+                    if (pc.PuzzlesChecked % 100_000_000 == 0)
                     {
                         Log.Logger.Information("Checking {i} of {nLeft} left * {j} of {nRight} right = {checked} of {Checks} for file {file}"
                             , i, leftPuzzleParts.Count
@@ -101,6 +101,7 @@ namespace CrosswordLibrary
                             , stats.Label);
                         WriteStatus(pc);
                         pc.Print(LastValidPuzzle);
+                        SVGWriter.Write(LastValidPuzzle, $"{Directory.GetParent(validDir)}\\SVGs");
                     }
                 }
             }
