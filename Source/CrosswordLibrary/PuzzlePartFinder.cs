@@ -74,23 +74,18 @@ namespace CrosswordLibrary
                     {
                         parts.Add(newPart);
                         TotalValidCount++;
-                        //Console.WriteLine($"Valid {TotalValidCount} {string.Join(", ", newPart.Take(depth + 1))}");
-
-                        
                     }
                 }
                 else
                 {
                     if (depth < width - 1)
                     {
-                        SlicesSkipped++;
-                        Console.WriteLine($"Skipp further checks {string.Join(", ", newPart.Take(depth + 1))}");
+                       
                     }
-                    else //If we are at full depth
+                    else
                     {
-                        //Console.WriteLine("Invalid");
+                        Console.WriteLine($"{newPart[0]},{newPart[1]},{newPart[2]}");
                     }
-                                      
                 }
             }
 
@@ -115,57 +110,7 @@ namespace CrosswordLibrary
             return true;
         }
 
-        private void WriteStatus()
-        {
-            int pad = 30;
-
-            Console.WriteLine("------------------------------Status--------------------------------------------");
-            Console.WriteLine($" Elapsed Seconds       {(DateTime.Now - StartTime).TotalSeconds.ToString("0.0").PadLeft(pad, ' ')}");
-            Console.WriteLine($" Approximate Progress  {((double)(SlicesChecked + SliceChildrenSkipped) / TotalSliceCount).ToString("P").PadLeft(pad, ' ')}");
-            Console.WriteLine($" Slice Info            {SliceInfo.PadLeft(pad, ' ')} ");
-            Console.WriteLine($" Total Slices          {TotalSliceCount.ToString("N0").PadLeft(pad, ' ')} ");
-            Console.WriteLine($" Checked Slices        {SlicesChecked.ToString("N0").PadLeft(pad, ' ')} ");
-            Console.WriteLine($" Skipped Slices        {SliceChildrenSkipped.ToString("N0").PadLeft(pad, ' ')} ");
-            Console.WriteLine($" Puzzels Checked       {NumChecked.ToString("N0").PadLeft(pad, ' ')}");
-            Console.WriteLine($" Total Invalid Row:    {(PuzzleChecker.InvalidRowCount).ToString("N0").PadLeft(pad, ' ')} ");
-            Console.WriteLine($" Total Cheater:        {(PuzzleChecker.CheaterCount).ToString("N0").PadLeft(pad, ' ')} ");
-            Console.WriteLine($" Total Not Continuous: {(PuzzleChecker.NotContiuousCount).ToString("N0").PadLeft(pad, ' ')} ");
-            Console.WriteLine($" Total Valid:          {(TotalValidCount).ToString("N0").PadLeft(pad, ' ')}");
-            Console.WriteLine("---------------------------------------------------------------------------------");
-
-        }
-
-        private void LogStatus()
-        {
-            Log.Logger.Information(" Elapsed Seconds {sec}" +
-           " Approximate Progress {prog}" +
-           " Slice Info {sliceinfo}" +
-           " Total Slices {totalslices}" +
-           " Checked Slices {checkedslices}" +
-           " Skipped Slices {skippedslices}" +
-           " Puzzels Checked {puzzelschecked}" +
-           " Total Invalid Row: {totalinvalidrows}" +
-           " Total Cheater: {totalcheater}" +
-           " Total Not Continuous: {totalnotcontinuous}" +
-           " Total Valid: {totalvalid}"
-
-            , (DateTime.Now - StartTime).TotalSeconds
-            , (double)(SlicesChecked + SliceChildrenSkipped) / TotalSliceCount
-            , SliceInfo.Trim()
-            , TotalSliceCount
-            , SlicesChecked
-            , SliceChildrenSkipped
-            , NumChecked
-            , PuzzleChecker.InvalidRowCount
-            , PuzzleChecker.CheaterCount
-            , PuzzleChecker.NotContiuousCount
-            , TotalValidCount
-            );
-
-        }
-
-
-        private string[] GetRootPart(ColumnGroup columns, int width)
+           private string[] GetRootPart(ColumnGroup columns, int width)
         {
             var rootColumn = columns.Columns.Where(x => x.Order == 0).First().ToString();
 

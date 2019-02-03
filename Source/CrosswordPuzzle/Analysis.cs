@@ -34,7 +34,7 @@ namespace CrosswordPuzzle
 
             //var pf = new PuzzleFinder(cf.ValidColumns, size + 1, true, (size - 1) / 2, slice);
 
-            Console.ReadKey();
+
         }
 
         private static void WritePartsToDisk(List<string[]> centerParts, Enums.Column keyCol, string folder)
