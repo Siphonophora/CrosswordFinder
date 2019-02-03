@@ -18,16 +18,17 @@ namespace CrosswordLibrary
         }
 
         public Hashtable ColumnHashtable { get; set; } = new Hashtable();
+        public Dictionary<string, string> ReverseDictionary { get; set; } = new Dictionary<string, string>();
         public long InvalidRowCount { get; set; } = 0;
         public long CheaterCount { get; set; } = 0;
         public long NotContiuousCount { get; set; } = 0;
+        public long PuzzlesChecked { get; private set; }
+        public long ValidCount { get; private set; }
+        public long InvalidEdgeRowCount { get; private set; }
         public int Size { get; private set; }
         public int Mid { get; private set; }
         public int LeftPartSize { get; private set; }
         public int CentPartSize { get; private set; }
-        public int PuzzlesChecked { get; private set; }
-        public int ValidCount { get; private set; }
-        public int InvalidEdgeRowCount { get; private set; }
 
 
 
@@ -52,12 +53,15 @@ namespace CrosswordLibrary
                 var row = GetRow(cols, i);
 
                 //Test the special case that the three top and three bottom rows MUST be eligible to be in the left colum, or they are cheaters.
-                if ((i <= 2 || i >= Size - 3) && validLeftColumnsDict.ContainsKey(row) == false)
+                if (i <= 2 || i >= Size - 3)
                 {
-                    InvalidEdgeRowCount++;
-                    return false;
+                    if (validLeftColumnsDict.ContainsKey(row) == false) //this shuold be faster than having it in the if above
+                    {
+                        InvalidEdgeRowCount++;
+                        return false;
+                    }
                 }
-                else if (validLeftColumnsDict.ContainsKey(row) == false)
+                else if (validColumns.ContainsKey(row) == false)
                 {
                     InvalidRowCount++;
                     return false;
@@ -329,10 +333,19 @@ namespace CrosswordLibrary
 
         public string Reverse(string s)
         {
+            if (ReverseDictionary.ContainsKey(s))
+            {
+                return ReverseDictionary[s];
+            }
+
             char[] charArray = s.ToCharArray();
             Array.Reverse(charArray);
-            return new string(charArray);
+            string rev = new string(charArray);
+            ReverseDictionary.Add(s, rev);
+
+            return rev;
         }
+
 
         public bool PartialRowsAreValid(string[] cols, bool leftEdge)
         {

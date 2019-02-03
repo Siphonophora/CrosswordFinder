@@ -13,6 +13,7 @@ namespace CrosswordLibrary
     public class PuzzleFinder
     {
         public ColumnGroup ValidColumns { get; private set; }
+        public Dictionary<string, string> ReverseDictionary { get; set; } = new Dictionary<string, string>();
         public int Size { get; }
         public string LeftDir { get; }
         public string CenterDir { get; }
@@ -75,10 +76,12 @@ namespace CrosswordLibrary
 
             for (int i = 0; i < leftPuzzleParts.Count; i++)
             {
+                var cols = ColsFromLeftParts(leftPuzzleParts[i]);
+
                 for (int j = 0; j < centerPuzzleParts.Count; j++)
                 {
                     stats.Checked++;
-                    var cols = ColsFromParts(leftPuzzleParts[i], centerPuzzleParts[j]);
+                    cols = AddCenterParts(cols, leftPuzzleParts[0].Length, centerPuzzleParts[j]);
                     if (pc.IsValidPuzzle(validColumnsDict, validLeftColumnsDict, cols))
                     {
                         LastValidPuzzle = cols;
@@ -102,7 +105,7 @@ namespace CrosswordLibrary
             public int Checked;
         }
 
-        private string[] ColsFromParts(string[] left, string[] center)
+        private string[] ColsFromLeftParts(string[] left)
         {
             var size = left[0].Length;
             var cols = new string[size];
@@ -112,24 +115,43 @@ namespace CrosswordLibrary
                 cols[i] = left[i];
                 cols[size - i - 1] = Reverse(left[i]);
             }
+            
+            return cols;
+        }
 
-            var offset = left.Length;
+        private string[] AddCenterParts(string[] cols, int leftLen, string[] center)
+        {
+            var size = cols[0].Length;
+
+            var offset = leftLen;
             for (int i = 1; i < center.Length; i++) //Start at 1 because of column overlap
             {
                 cols[i + offset - 1] = center[i];
-                cols[size - (i + offset - 1) - 1] = Reverse(center[i]);
+                if (i < center.Length - 1)
+                {
+                    cols[size - (i + offset - 1) - 1] = Reverse(center[i]);
+                }
             }
 
             return cols;
         }
 
 
-
         public string Reverse(string s)
         {
-            char[] charArray = s.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
+            try
+            {
+                return ReverseDictionary[s];
+            }
+            catch
+            {
+                char[] charArray = s.ToCharArray();
+                Array.Reverse(charArray);
+                string rev = new string(charArray);
+                ReverseDictionary.Add(s, rev);
+
+                return rev;
+            }
         }
 
 
