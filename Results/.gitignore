@@ -1,2 +1,3 @@
 # Keep text logs out of repository
 *.txt
+*.inprocess
