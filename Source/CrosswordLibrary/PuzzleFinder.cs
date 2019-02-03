@@ -36,8 +36,8 @@ namespace CrosswordLibrary
             foreach (var leftFile in leftFiles)
             {
                 var validFiles = Directory.GetFiles(validDir, "*.inprocess");
-                if (cntrFiles.Where(x => Path.GetFileName(x) == Path.GetFileName(leftFile)).Count() > 0
-                   && validFiles.Where(x => Path.GetFileName(x) == Path.GetFileName(leftFile)).Count() == 0
+                if (cntrFiles.Where(x => Path.GetFileNameWithoutExtension(x) == Path.GetFileNameWithoutExtension(leftFile)).Count() > 0
+                   && validFiles.Where(x => Path.GetFileNameWithoutExtension(x) == Path.GetFileNameWithoutExtension(leftFile)).Count() == 0
                   )
                 {
                     File.Create($"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.inprocess");
