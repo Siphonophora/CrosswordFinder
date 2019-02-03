@@ -76,17 +76,13 @@ namespace CrosswordLibrary
                         TotalValidCount++;
                     }
                 }
-                else
-                {
-                    if (depth < width - 1)
-                    {
-                       
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{newPart[0]},{newPart[1]},{newPart[2]}");
-                    }
-                }
+                //else
+                //{
+                //    if (depth < width - 1)
+                //    {
+                //        Console.WriteLine($"Invalid - {string.Join(",", newPart)}");         //Stopping search early              
+                //    }
+                //}
             }
 
             return parts;
@@ -110,7 +106,7 @@ namespace CrosswordLibrary
             return true;
         }
 
-           private string[] GetRootPart(ColumnGroup columns, int width)
+        private string[] GetRootPart(ColumnGroup columns, int width)
         {
             var rootColumn = columns.Columns.Where(x => x.Order == 0).First().ToString();
 

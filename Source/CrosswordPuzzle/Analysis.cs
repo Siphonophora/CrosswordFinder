@@ -19,22 +19,23 @@ namespace CrosswordPuzzle
             var cf = new ColumnFinder(size);
             var cc = new ColumnClassifier(cf.ValidColumns);
             var ppf = new PuzzlePartFinder();
+            var pc = new PuzzleChecker(size);
 
-            var leftParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Left, new ColumnPickerLeft(), size);
             var leftDir = $"{folder}\\LeftPuzzleParts";
-            //Directory.Delete(leftDir);
-            Directory.CreateDirectory(leftDir);            
-            WritePartsToDisk(leftParts, Enums.Column.Last, $"{folder}\\LeftPuzzleParts");
-
-            var centerParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Center, new ColumnPickerCenter(), size);
             var centerDir = $"{folder}\\CenterPuzzleParts";
-            //Directory.Delete(centerDir);
+            var validDir = $"{folder}\\ValidPuzzles"; Directory.CreateDirectory(centerDir);
+            Directory.CreateDirectory(leftDir);
             Directory.CreateDirectory(centerDir);
-            WritePartsToDisk(centerParts, Enums.Column.First, $"{folder}\\CenterPuzzleParts");
-
-            //var pf = new PuzzleFinder(cf.ValidColumns, size + 1, true, (size - 1) / 2, slice);
+            Directory.CreateDirectory(validDir);
 
 
+            //var leftParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Left, new ColumnPickerLeft(), size);
+            //WritePartsToDisk(leftParts, Enums.Column.Last, $"{folder}\\LeftPuzzleParts");
+
+            //var centerParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Center, new ColumnPickerCenter(), size);
+            //WritePartsToDisk(centerParts, Enums.Column.First, $"{folder}\\CenterPuzzleParts");
+
+            var pf = new PuzzleFinder(pc, cc.ValidColumns, size, leftDir, centerDir, validDir);
         }
 
         private static void WritePartsToDisk(List<string[]> centerParts, Enums.Column keyCol, string folder)

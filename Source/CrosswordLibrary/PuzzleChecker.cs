@@ -25,6 +25,9 @@ namespace CrosswordLibrary
         public int Mid { get; private set; }
         public int LeftPartSize { get; private set; }
         public int CentPartSize { get; private set; }
+        public int PuzzlesChecked { get; private set; }
+        public int ValidCount { get; private set; }
+        public int InvalidEdgeRowCount { get; private set; }
 
 
 
@@ -34,27 +37,27 @@ namespace CrosswordLibrary
         /// <param name="orderPuzzle"></param>
         /// <param name="candidate">Ref because we calculate word count in this </param>
         /// <returns></returns>
-        public bool IsValidNewPuzzle(Puzzle candidate)
+        public bool IsValidPuzzle(Dictionary<string, Column> validColumns, Dictionary<string, Column> validLeftColumnsDict, Puzzle candidate)
         {
             var cols = GetCols(candidate);
-            return IsValidNewPuzzle(cols);
+            return IsValidPuzzle(validColumns, validLeftColumnsDict, cols);
         }
 
-        public bool IsValidNewPuzzle(string[] cols)
+        public bool IsValidPuzzle(Dictionary<string, Column> validColumns, Dictionary<string, Column> validLeftColumnsDict, string[] cols)
         {
+            PuzzlesChecked++;
+
             for (int i = 0; i < Size; i++)
             {
                 var row = GetRow(cols, i);
-                var col = (Column)ColumnHashtable[row];
-                if (col == null)
-                {
-                    //Catch when not a valid key
-                    InvalidRowCount++;
-                    return false;
-                }
 
                 //Test the special case that the three top and three bottom rows MUST be eligible to be in the left colum, or they are cheaters.
-                if ((i <= 2 || i >= Size - 3) && col.ValidLeftColumn == false)
+                if ((i <= 2 || i >= Size - 3) && validLeftColumnsDict.ContainsKey(row) == false)
+                {
+                    InvalidEdgeRowCount++;
+                    return false;
+                }
+                else if (validLeftColumnsDict.ContainsKey(row) == false)
                 {
                     InvalidRowCount++;
                     return false;
@@ -77,6 +80,7 @@ namespace CrosswordLibrary
                 return false;
             }
 
+            ValidCount++;
             return true;
         }
 
@@ -122,6 +126,7 @@ namespace CrosswordLibrary
             //If we didn't
             return false;
         }
+
 
         private void SearchContinuous(List<Word> words, int colNum, bool down)
         {
@@ -350,15 +355,18 @@ namespace CrosswordLibrary
             return true;
         }
 
+
         public void Print(Puzzle candidate)
         {
-            var cols = GetCols(candidate);
-            int size = candidate.Size;
+            Print(GetCols(candidate));
+        }
+
+        public void Print(string[] cols)
+        {
+            int size = cols[0].Length;
             Console.WriteLine(" ");
             Console.BackgroundColor = ConsoleColor.Gray;
-            Console.Write(" " + new string(' ', size) + " ");
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.WriteLine($" Order: {candidate.Order}");
+            Console.WriteLine(" " + new string(' ', size) + " ");
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Blue;
             for (int i = 0; i < size; i++)
