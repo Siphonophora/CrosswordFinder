@@ -35,16 +35,15 @@ namespace CrosswordLibrary
             int i = 0;
             foreach (var leftFile in leftFiles)
             {
-                var validFiles = Directory.GetFiles(validDir, "*.json");
+                var validFiles = Directory.GetFiles(validDir, "*.inprocess");
                 if (cntrFiles.Where(x => Path.GetFileName(x) == Path.GetFileName(leftFile)).Count() > 0
                    && validFiles.Where(x => Path.GetFileName(x) == Path.GetFileName(leftFile)).Count() == 0
                   )
                 {
-                    string outFile = $"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.json";
-                    File.Create(outFile);
+                    File.Create($"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.inprocess");
                     var stats = FindPuzzels(pc, validColumns, leftFile, cntrFiles.Where(x => Path.GetFileName(x) == Path.GetFileName(leftFile)).First(), validDir);
                     Console.WriteLine($"Done With {Path.GetFileName(leftFile)}. File {i} of {leftFiles.Count()}");
-                    File.WriteAllText(outFile, JsonConvert.SerializeObject(stats, Formatting.Indented));
+                    File.WriteAllText($"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.json", JsonConvert.SerializeObject(stats, Formatting.Indented));
                     LogStatus(pc);
                 }
                 else

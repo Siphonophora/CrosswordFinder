@@ -31,8 +31,7 @@ namespace CrosswordPuzzle
             Serilog.Debugging.SelfLog.Enable(Console.Error);
             Log.Logger = new LoggerConfiguration()
             //.WriteTo.Console()
-            .WriteTo.File($"{logFolder}\\log.txt", rollingInterval: RollingInterval.Day)
-            .WriteTo.File(new JsonFormatter(), $"{logFolder}\\log.json", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(new JsonFormatter(), $"{logFolder}\\log {DateTime.Now.ToString("yyyyMMdd HHmmss")} {sessionGUID.Substring(0,5)}.json", rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
 
@@ -41,7 +40,6 @@ namespace CrosswordPuzzle
             {
                 Log.Logger.Information("Startup Size: {Size} Slice {Slice}", Size, Slice);
                 Analysis.Run(Size, Slice, folder);
-
             }
             catch (Exception e)
             {
