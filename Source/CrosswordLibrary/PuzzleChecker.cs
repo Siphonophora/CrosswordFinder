@@ -13,8 +13,8 @@ namespace CrosswordLibrary
         {
             Size = size;
             Mid = (Size + 1) / 2;
-            LeftPartSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2) + 1;
-            CentPartSize = Mid % 2 == 0 ? (Mid + 1) / 2 : (Mid / 2);
+            LeftPartSize = Mid % 2 != 0 ? (Mid + 1) / 2 : (Mid / 2) + 1;
+            CentPartSize = Mid % 2 != 0 ? (Mid + 1) / 2 : (Mid / 2);
         }
 
         public Hashtable ColumnHashtable { get; set; } = new Hashtable();
@@ -37,8 +37,12 @@ namespace CrosswordLibrary
         public bool IsValidNewPuzzle(Puzzle candidate)
         {
             var cols = GetCols(candidate);
+            return IsValidNewPuzzle(cols);
+        }
 
-            for (int i = 0; i < candidate.Size; i++)
+        public bool IsValidNewPuzzle(string[] cols)
+        {
+            for (int i = 0; i < Size; i++)
             {
                 var row = GetRow(cols, i);
                 var col = (Column)ColumnHashtable[row];
@@ -50,7 +54,7 @@ namespace CrosswordLibrary
                 }
 
                 //Test the special case that the three top and three bottom rows MUST be eligible to be in the left colum, or they are cheaters.
-                if ((i <= 2 || i >= candidate.Size - 3) && col.ValidLeftColumn == false)
+                if ((i <= 2 || i >= Size - 3) && col.ValidLeftColumn == false)
                 {
                     InvalidRowCount++;
                     return false;
@@ -333,11 +337,11 @@ namespace CrosswordLibrary
                 var words = GetWords(row);
 
                 //Words are invalid if they are < 3 and contained entirely in the row OR a left edge.
-                var errors = words.Where(x => x.Len < 3 
-                                              && ( x.Start > 0 || leftEdge )
+                var errors = words.Where(x => x.Len < 3
+                                              && (x.Start > 0 || leftEdge)
                                               && x.Stop < cols.Length - 1
                                         ).Count();
-                if(errors > 0)
+                if (errors > 0)
                 {
                     return false;
                 }
