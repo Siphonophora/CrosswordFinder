@@ -91,7 +91,7 @@ namespace CrosswordLibrary
                         stats.Valid++;
                     }
 
-                    if (pc.PuzzlesChecked % 100_000_000 == 0)
+                    if (pc.PuzzlesChecked % 1_000 == 0)
                     {
                         Log.Logger.Information("Checking {i} of {nLeft} left * {j} of {nRight} right = {checked} of {Checks} for file {file}"
                             , i, leftPuzzleParts.Count

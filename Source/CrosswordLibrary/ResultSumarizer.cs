@@ -34,8 +34,6 @@ namespace CrosswordLibrary
 
             var jsonout = JsonConvert.SerializeObject(results, Formatting.Indented);
             File.WriteAllText(outfile, jsonout);
-
-            Console.ReadLine();
         }
     }
 }

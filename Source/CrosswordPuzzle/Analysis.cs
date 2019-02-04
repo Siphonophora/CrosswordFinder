@@ -29,13 +29,13 @@ namespace CrosswordPuzzle
             Directory.CreateDirectory(validDir);
 
 
-            //var leftParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Left, new ColumnPickerLeft(), size);
-            //WritePartsToDisk(leftParts, Enums.Column.Last, $"{folder}\\LeftPuzzleParts");
+            var leftParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Left, new ColumnPickerLeft(), size);
+            WritePartsToDisk(leftParts, Enums.Column.Last, $"{folder}\\LeftPuzzleParts");
 
-            //var centerParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Center, new ColumnPickerCenter(), size);
-            //WritePartsToDisk(centerParts, Enums.Column.First, $"{folder}\\CenterPuzzleParts");
+            var centerParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Center, new ColumnPickerCenter(), size);
+            WritePartsToDisk(centerParts, Enums.Column.First, $"{folder}\\CenterPuzzleParts");
 
-            //var pf = new PuzzleFinder(pc, cc.ValidColumns, size, leftDir, centerDir, validDir);
+            var pf = new PuzzleFinder(pc, cc.ValidColumns, size, leftDir, centerDir, validDir);
             ResultSumarizer.Summarize(validDir);
         }
 
