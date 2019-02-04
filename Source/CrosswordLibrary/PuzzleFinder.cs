@@ -113,8 +113,7 @@ namespace CrosswordLibrary
             public string Label;
             public long Valid;
             public long Checked;
-
-            public double Seconds { get; internal set; }
+            public double Seconds;
         }
 
         private string[] ColsFromLeftParts(string[] left)

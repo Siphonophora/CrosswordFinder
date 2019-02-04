@@ -61,6 +61,7 @@
     <Compile Include="PuzzleChecker.cs" />
     <Compile Include="PuzzlePartFinder.cs" />
     <Compile Include="PuzzleFinder.cs" />
+    <Compile Include="ResultSumarizer.cs" />
     <Compile Include="SVGWriter.cs" />
   </ItemGroup>
   <ItemGroup>

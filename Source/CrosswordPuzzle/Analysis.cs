@@ -14,7 +14,7 @@ namespace CrosswordPuzzle
         public static void Run(int size, int slice, string folder)
         {
             Console.WindowWidth = 200;
-            Console.WindowHeight = 70;
+            Console.WindowHeight = 60;
 
             var cf = new ColumnFinder(size);
             var cc = new ColumnClassifier(cf.ValidColumns);
@@ -35,7 +35,8 @@ namespace CrosswordPuzzle
             //var centerParts = ppf.FindParts(cc.ValidColumns, Enums.PuzzlePart.Center, new ColumnPickerCenter(), size);
             //WritePartsToDisk(centerParts, Enums.Column.First, $"{folder}\\CenterPuzzleParts");
 
-            var pf = new PuzzleFinder(pc, cc.ValidColumns, size, leftDir, centerDir, validDir);
+            //var pf = new PuzzleFinder(pc, cc.ValidColumns, size, leftDir, centerDir, validDir);
+            ResultSumarizer.Summarize(validDir);
         }
 
         private static void WritePartsToDisk(List<string[]> centerParts, Enums.Column keyCol, string folder)
