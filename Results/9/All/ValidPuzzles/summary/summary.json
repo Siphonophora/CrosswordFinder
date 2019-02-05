@@ -1,0 +1,32 @@
+[
+  {
+    "Label": "111011111",
+    "Valid": 21,
+    "Checked": 98,
+    "Seconds": 3.3241125
+  },
+  {
+    "Label": "111101111",
+    "Valid": 20,
+    "Checked": 60,
+    "Seconds": 5.143249
+  },
+  {
+    "Label": "111110111",
+    "Valid": 21,
+    "Checked": 98,
+    "Seconds": 8.0734146999999989
+  },
+  {
+    "Label": "111111111",
+    "Valid": 260,
+    "Checked": 938,
+    "Seconds": 27.3917944
+  },
+  {
+    "Label": "Summary of 4 join column's checked",
+    "Valid": 322,
+    "Checked": 1194,
+    "Seconds": 43.932570599999991
+  }
+]

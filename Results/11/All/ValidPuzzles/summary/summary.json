@@ -1,0 +1,704 @@
+[
+  {
+    "Label": "00000000111",
+    "Valid": 1,
+    "Checked": 4,
+    "Seconds": 0.0518616
+  },
+  {
+    "Label": "00000001110",
+    "Valid": 3,
+    "Checked": 12,
+    "Seconds": 0.11970929999999999
+  },
+  {
+    "Label": "00000001111",
+    "Valid": 3,
+    "Checked": 24,
+    "Seconds": 0.1356382
+  },
+  {
+    "Label": "00000011100",
+    "Valid": 6,
+    "Checked": 28,
+    "Seconds": 0.1545878
+  },
+  {
+    "Label": "00000011110",
+    "Valid": 6,
+    "Checked": 42,
+    "Seconds": 0.16855
+  },
+  {
+    "Label": "00000011111",
+    "Valid": 6,
+    "Checked": 70,
+    "Seconds": 0.18251289999999998
+  },
+  {
+    "Label": "00000111000",
+    "Valid": 16,
+    "Checked": 120,
+    "Seconds": 0.2014618
+  },
+  {
+    "Label": "00000111100",
+    "Valid": 18,
+    "Checked": 120,
+    "Seconds": 0.213469
+  },
+  {
+    "Label": "00000111110",
+    "Valid": 18,
+    "Checked": 190,
+    "Seconds": 0.2313989
+  },
+  {
+    "Label": "00000111111",
+    "Valid": 18,
+    "Checked": 300,
+    "Seconds": 0.2513281
+  },
+  {
+    "Label": "00001110000",
+    "Valid": 42,
+    "Checked": 120,
+    "Seconds": 0.3061887
+  },
+  {
+    "Label": "00001110111",
+    "Valid": 58,
+    "Checked": 440,
+    "Seconds": 0.33809839999999997
+  },
+  {
+    "Label": "00001111000",
+    "Valid": 66,
+    "Checked": 247,
+    "Seconds": 0.3540539
+  },
+  {
+    "Label": "00001111100",
+    "Valid": 73,
+    "Checked": 247,
+    "Seconds": 0.3680404
+  },
+  {
+    "Label": "00001111110",
+    "Valid": 73,
+    "Checked": 403,
+    "Seconds": 0.41293159999999995
+  },
+  {
+    "Label": "00001111111",
+    "Valid": 73,
+    "Checked": 663,
+    "Seconds": 0.4647851
+  },
+  {
+    "Label": "00011100000",
+    "Valid": 16,
+    "Checked": 120,
+    "Seconds": 0.4847282
+  },
+  {
+    "Label": "00011100111",
+    "Valid": 24,
+    "Checked": 440,
+    "Seconds": 0.5196115
+  },
+  {
+    "Label": "00011101110",
+    "Valid": 204,
+    "Checked": 1058,
+    "Seconds": 0.5754613
+  },
+  {
+    "Label": "00011101111",
+    "Valid": 204,
+    "Checked": 1794,
+    "Seconds": 0.6632266
+  },
+  {
+    "Label": "00011110000",
+    "Valid": 66,
+    "Checked": 247,
+    "Seconds": 0.67821369999999992
+  },
+  {
+    "Label": "00011110111",
+    "Valid": 164,
+    "Checked": 1190,
+    "Seconds": 0.7330416
+  },
+  {
+    "Label": "00011111000",
+    "Valid": 307,
+    "Checked": 1025,
+    "Seconds": 0.7929111
+  },
+  {
+    "Label": "00011111100",
+    "Valid": 374,
+    "Checked": 1025,
+    "Seconds": 0.846769
+  },
+  {
+    "Label": "00011111110",
+    "Valid": 374,
+    "Checked": 1725,
+    "Seconds": 0.93153749999999991
+  },
+  {
+    "Label": "00011111111",
+    "Valid": 374,
+    "Checked": 2850,
+    "Seconds": 1.060184
+  },
+  {
+    "Label": "00111000000",
+    "Valid": 6,
+    "Checked": 28,
+    "Seconds": 1.0691601
+  },
+  {
+    "Label": "00111000111",
+    "Valid": 7,
+    "Checked": 112,
+    "Seconds": 1.0791154
+  },
+  {
+    "Label": "00111001110",
+    "Valid": 78,
+    "Checked": 342,
+    "Seconds": 1.0920988999999999
+  },
+  {
+    "Label": "00111001111",
+    "Valid": 78,
+    "Checked": 646,
+    "Seconds": 1.1389756
+  },
+  {
+    "Label": "00111011100",
+    "Valid": 222,
+    "Checked": 391,
+    "Seconds": 1.186828
+  },
+  {
+    "Label": "00111011110",
+    "Valid": 222,
+    "Checked": 667,
+    "Seconds": 1.2067740999999999
+  },
+  {
+    "Label": "00111011111",
+    "Valid": 222,
+    "Checked": 1127,
+    "Seconds": 1.2536797
+  },
+  {
+    "Label": "00111100000",
+    "Valid": 18,
+    "Checked": 120,
+    "Seconds": 1.2646195999999998
+  },
+  {
+    "Label": "00111100111",
+    "Valid": 27,
+    "Checked": 440,
+    "Seconds": 1.3055112
+  },
+  {
+    "Label": "00111101110",
+    "Valid": 228,
+    "Checked": 1058,
+    "Seconds": 1.3524162
+  },
+  {
+    "Label": "00111101111",
+    "Valid": 228,
+    "Checked": 1794,
+    "Seconds": 1.4381564
+  },
+  {
+    "Label": "00111110000",
+    "Valid": 73,
+    "Checked": 247,
+    "Seconds": 1.4501437
+  },
+  {
+    "Label": "00111110111",
+    "Valid": 187,
+    "Checked": 1190,
+    "Seconds": 1.4979951999999999
+  },
+  {
+    "Label": "00111111000",
+    "Valid": 374,
+    "Checked": 1025,
+    "Seconds": 1.5508742
+  },
+  {
+    "Label": "00111111100",
+    "Valid": 444,
+    "Checked": 1025,
+    "Seconds": 1.6027151
+  },
+  {
+    "Label": "00111111110",
+    "Valid": 444,
+    "Checked": 1725,
+    "Seconds": 1.6935061999999999
+  },
+  {
+    "Label": "00111111111",
+    "Valid": 444,
+    "Checked": 2850,
+    "Seconds": 1.8091632999999998
+  },
+  {
+    "Label": "01110000000",
+    "Valid": 3,
+    "Checked": 12,
+    "Seconds": 1.8231259
+  },
+  {
+    "Label": "01110000111",
+    "Valid": 4,
+    "Checked": 56,
+    "Seconds": 1.8430927
+  },
+  {
+    "Label": "01110001110",
+    "Valid": 52,
+    "Checked": 304,
+    "Seconds": 1.8590327999999998
+  },
+  {
+    "Label": "01110001111",
+    "Valid": 52,
+    "Checked": 576,
+    "Seconds": 1.9069317
+  },
+  {
+    "Label": "01110011100",
+    "Valid": 78,
+    "Checked": 342,
+    "Seconds": 1.9278701999999999
+  },
+  {
+    "Label": "01110011110",
+    "Valid": 78,
+    "Checked": 570,
+    "Seconds": 1.9757182999999998
+  },
+  {
+    "Label": "01110011111",
+    "Valid": 78,
+    "Checked": 969,
+    "Seconds": 2.0255853999999998
+  },
+  {
+    "Label": "01110111000",
+    "Valid": 204,
+    "Checked": 1058,
+    "Seconds": 2.0934041
+  },
+  {
+    "Label": "01110111100",
+    "Valid": 228,
+    "Checked": 1058,
+    "Seconds": 2.1442891
+  },
+  {
+    "Label": "01110111110",
+    "Valid": 228,
+    "Checked": 1978,
+    "Seconds": 2.2260489
+  },
+  {
+    "Label": "01110111111",
+    "Valid": 228,
+    "Checked": 3404,
+    "Seconds": 2.3377502999999997
+  },
+  {
+    "Label": "01111000000",
+    "Valid": 6,
+    "Checked": 42,
+    "Seconds": 2.345729
+  },
+  {
+    "Label": "01111000111",
+    "Valid": 7,
+    "Checked": 196,
+    "Seconds": 2.3537082
+  },
+  {
+    "Label": "01111001110",
+    "Valid": 78,
+    "Checked": 570,
+    "Seconds": 2.39463
+  },
+  {
+    "Label": "01111001111",
+    "Valid": 78,
+    "Checked": 1102,
+    "Seconds": 2.4345119
+  },
+  {
+    "Label": "01111011100",
+    "Valid": 222,
+    "Checked": 667,
+    "Seconds": 2.4833612
+  },
+  {
+    "Label": "01111011110",
+    "Valid": 222,
+    "Checked": 1265,
+    "Seconds": 2.5302355
+  },
+  {
+    "Label": "01111011111",
+    "Valid": 222,
+    "Checked": 2185,
+    "Seconds": 2.6050356999999997
+  },
+  {
+    "Label": "01111100000",
+    "Valid": 18,
+    "Checked": 190,
+    "Seconds": 2.6130383
+  },
+  {
+    "Label": "01111100111",
+    "Valid": 27,
+    "Checked": 830,
+    "Seconds": 2.6588919
+  },
+  {
+    "Label": "01111101110",
+    "Valid": 228,
+    "Checked": 1978,
+    "Seconds": 2.7367041999999997
+  },
+  {
+    "Label": "01111101111",
+    "Valid": 228,
+    "Checked": 3404,
+    "Seconds": 2.8803202999999997
+  },
+  {
+    "Label": "01111110000",
+    "Valid": 73,
+    "Checked": 403,
+    "Seconds": 2.8902937
+  },
+  {
+    "Label": "01111110111",
+    "Valid": 187,
+    "Checked": 2346,
+    "Seconds": 2.9680967
+  },
+  {
+    "Label": "01111111000",
+    "Valid": 374,
+    "Checked": 1725,
+    "Seconds": 3.0518726999999997
+  },
+  {
+    "Label": "01111111100",
+    "Valid": 444,
+    "Checked": 1725,
+    "Seconds": 3.1356376999999998
+  },
+  {
+    "Label": "01111111110",
+    "Valid": 444,
+    "Checked": 3225,
+    "Seconds": 3.2513082
+  },
+  {
+    "Label": "01111111111",
+    "Valid": 444,
+    "Checked": 5525,
+    "Seconds": 3.4318627999999998
+  },
+  {
+    "Label": "11100000000",
+    "Valid": 1,
+    "Checked": 4,
+    "Seconds": 3.4757086
+  },
+  {
+    "Label": "11100000111",
+    "Valid": 10,
+    "Checked": 22,
+    "Seconds": 3.4827095
+  },
+  {
+    "Label": "11100001110",
+    "Valid": 4,
+    "Checked": 56,
+    "Seconds": 3.4906683
+  },
+  {
+    "Label": "11100001111",
+    "Valid": 39,
+    "Checked": 136,
+    "Seconds": 3.5006724
+  },
+  {
+    "Label": "11100011100",
+    "Valid": 7,
+    "Checked": 112,
+    "Seconds": 3.5096178
+  },
+  {
+    "Label": "11100011110",
+    "Valid": 7,
+    "Checked": 196,
+    "Seconds": 3.5186138
+  },
+  {
+    "Label": "11100011111",
+    "Valid": 69,
+    "Checked": 420,
+    "Seconds": 3.5285895999999997
+  },
+  {
+    "Label": "11100111000",
+    "Valid": 24,
+    "Checked": 440,
+    "Seconds": 3.570455
+  },
+  {
+    "Label": "11100111100",
+    "Valid": 27,
+    "Checked": 440,
+    "Seconds": 3.5784333
+  },
+  {
+    "Label": "11100111110",
+    "Valid": 27,
+    "Checked": 830,
+    "Seconds": 3.6243325
+  },
+  {
+    "Label": "11100111111",
+    "Valid": 236,
+    "Checked": 1670,
+    "Seconds": 3.7100814
+  },
+  {
+    "Label": "11101110000",
+    "Valid": 58,
+    "Checked": 440,
+    "Seconds": 3.7180597
+  },
+  {
+    "Label": "11101110111",
+    "Valid": 669,
+    "Checked": 3016,
+    "Seconds": 3.8377398
+  },
+  {
+    "Label": "11101111000",
+    "Valid": 164,
+    "Checked": 1190,
+    "Seconds": 3.8906193
+  },
+  {
+    "Label": "11101111100",
+    "Valid": 187,
+    "Checked": 1190,
+    "Seconds": 3.975393
+  },
+  {
+    "Label": "11101111110",
+    "Valid": 187,
+    "Checked": 2346,
+    "Seconds": 4.0521907
+  },
+  {
+    "Label": "11101111111",
+    "Valid": 1244,
+    "Checked": 4964,
+    "Seconds": 4.2596411
+  },
+  {
+    "Label": "11110000000",
+    "Valid": 3,
+    "Checked": 24,
+    "Seconds": 4.2655959999999995
+  },
+  {
+    "Label": "11110000111",
+    "Valid": 39,
+    "Checked": 136,
+    "Seconds": 4.2725986
+  },
+  {
+    "Label": "11110001110",
+    "Valid": 52,
+    "Checked": 576,
+    "Seconds": 4.3134885
+  },
+  {
+    "Label": "11110001111",
+    "Valid": 390,
+    "Checked": 1264,
+    "Seconds": 4.3683448999999994
+  },
+  {
+    "Label": "11110011100",
+    "Valid": 78,
+    "Checked": 646,
+    "Seconds": 4.4172117
+  },
+  {
+    "Label": "11110011110",
+    "Valid": 78,
+    "Checked": 1102,
+    "Seconds": 4.4581028
+  },
+  {
+    "Label": "11110011111",
+    "Valid": 538,
+    "Checked": 2166,
+    "Seconds": 4.5528493999999995
+  },
+  {
+    "Label": "11110111000",
+    "Valid": 204,
+    "Checked": 1794,
+    "Seconds": 4.6316182
+  },
+  {
+    "Label": "11110111100",
+    "Valid": 228,
+    "Checked": 1794,
+    "Seconds": 4.677515
+  },
+  {
+    "Label": "11110111110",
+    "Valid": 228,
+    "Checked": 3404,
+    "Seconds": 4.8290916
+  },
+  {
+    "Label": "11110111111",
+    "Valid": 1607,
+    "Checked": 6693,
+    "Seconds": 5.1083643
+  },
+  {
+    "Label": "11111000000",
+    "Valid": 6,
+    "Checked": 70,
+    "Seconds": 5.1143277
+  },
+  {
+    "Label": "11111000111",
+    "Valid": 69,
+    "Checked": 420,
+    "Seconds": 5.1233037999999995
+  },
+  {
+    "Label": "11111001110",
+    "Valid": 78,
+    "Checked": 969,
+    "Seconds": 5.1681833
+  },
+  {
+    "Label": "11111001111",
+    "Valid": 538,
+    "Checked": 2166,
+    "Seconds": 5.2529876999999994
+  },
+  {
+    "Label": "11111011100",
+    "Valid": 222,
+    "Checked": 1127,
+    "Seconds": 5.2968709999999994
+  },
+  {
+    "Label": "11111011110",
+    "Valid": 222,
+    "Checked": 2185,
+    "Seconds": 5.4175379
+  },
+  {
+    "Label": "11111011111",
+    "Valid": 1549,
+    "Checked": 4324,
+    "Seconds": 5.595071
+  },
+  {
+    "Label": "11111100000",
+    "Valid": 18,
+    "Checked": 300,
+    "Seconds": 5.6040184
+  },
+  {
+    "Label": "11111100111",
+    "Valid": 236,
+    "Checked": 1670,
+    "Seconds": 5.6808397999999993
+  },
+  {
+    "Label": "11111101110",
+    "Valid": 228,
+    "Checked": 3404,
+    "Seconds": 5.8064767999999995
+  },
+  {
+    "Label": "11111101111",
+    "Valid": 1607,
+    "Checked": 6693,
+    "Seconds": 6.0847644
+  },
+  {
+    "Label": "11111110000",
+    "Valid": 73,
+    "Checked": 663,
+    "Seconds": 6.1276186999999993
+  },
+  {
+    "Label": "11111110111",
+    "Valid": 1244,
+    "Checked": 4964,
+    "Seconds": 6.33908
+  },
+  {
+    "Label": "11111111000",
+    "Valid": 374,
+    "Checked": 2850,
+    "Seconds": 6.42882
+  },
+  {
+    "Label": "11111111100",
+    "Valid": 444,
+    "Checked": 2850,
+    "Seconds": 6.5475154999999994
+  },
+  {
+    "Label": "11111111110",
+    "Valid": 444,
+    "Checked": 5525,
+    "Seconds": 6.7689236999999993
+  },
+  {
+    "Label": "11111111111",
+    "Valid": 3067,
+    "Checked": 11025,
+    "Seconds": 7.2426582999999995
+  },
+  {
+    "Label": "Summary of 116 join column's checked",
+    "Valid": 27248,
+    "Checked": 155272,
+    "Seconds": 315.37742530000008
+  }
+]

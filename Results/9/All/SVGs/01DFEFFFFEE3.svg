@@ -1,0 +1,124 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC " -//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width = "55mm" height = "55mm" version = "1.1" xmlns="http://www.w3.org/2000/svg">
+
+<rect x="5mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">1</text>
+<rect x="10mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="10.214285723865mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">2</text>
+<rect x="15mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="15.214285723865mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">3</text>
+<rect x="20mm" y="5mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="25mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="25.214285723865mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">4</text>
+<rect x="30mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="30.214285723865mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">5</text>
+<rect x="35mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="35.214285723865mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">6</text>
+<rect x="40mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="40.214285723865mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">7</text>
+<rect x="45mm" y="5mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="45.214285723865mm" y="6.07142857462168mm" fill="black" font-family="sans-serif" font-size="1mm">8</text>
+
+<rect x="5mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="11.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">9</text>
+<rect x="10mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="15mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="20mm" y="10mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="25mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="25.214285723865mm" y="11.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">10</text>
+<rect x="30mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="35mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="40mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="45mm" y="10mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+
+<rect x="5mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="16.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">11</text>
+<rect x="10mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="15mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="20mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="20.214285723865mm" y="16.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">12</text>
+<rect x="25mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="30mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="35mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="40mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="45mm" y="15mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+
+<rect x="5mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="21.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">13</text>
+<rect x="10mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="15mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="20mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="25mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="30mm" y="20mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="35mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="35.214285723865mm" y="21.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">14</text>
+<rect x="40mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="45mm" y="20mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+
+<rect x="5mm" y="25mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="10mm" y="25mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="15mm" y="25mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="20mm" y="25mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="20.214285723865mm" y="26.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">15</text>
+<rect x="25mm" y="25mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="30mm" y="25mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="30.214285723865mm" y="26.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">16</text>
+<rect x="35mm" y="25mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="40mm" y="25mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="45mm" y="25mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+
+<rect x="5mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="31.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">17</text>
+<rect x="10mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="10.214285723865mm" y="31.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">18</text>
+<rect x="15mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="15.214285723865mm" y="31.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">19</text>
+<rect x="20mm" y="30mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="25mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="25.214285723865mm" y="31.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">20</text>
+<rect x="30mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="35mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="35.214285723865mm" y="31.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">21</text>
+<rect x="40mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="40.214285723865mm" y="31.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">22</text>
+<rect x="45mm" y="30mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="45.214285723865mm" y="31.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">23</text>
+
+<rect x="5mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="36.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">24</text>
+<rect x="10mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="15mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="20mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="20.214285723865mm" y="36.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">25</text>
+<rect x="25mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="30mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="35mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="40mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="45mm" y="35mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+
+<rect x="5mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="41.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">26</text>
+<rect x="10mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="15mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="20mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="25mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="30mm" y="40mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="35mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="35.214285723865mm" y="41.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">27</text>
+<rect x="40mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="45mm" y="40mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+
+<rect x="5mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="5.21428572386503mm" y="46.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">28</text>
+<rect x="10mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="15mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="20mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="25mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="30mm" y="45mm" width="5mm" height="5mm" fill="black" stroke="black" stroke-width = "0.143mm" />
+<rect x="35mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<text x="35.214285723865mm" y="46.0714285746217mm" fill="black" font-family="sans-serif" font-size="1mm">29</text>
+<rect x="40mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+<rect x="45mm" y="45mm" width="5mm" height="5mm" fill="none" stroke="black" stroke-width = "0.143mm" />
+
+</svg>
