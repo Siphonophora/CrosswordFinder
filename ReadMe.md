@@ -44,5 +44,12 @@ This solution searches only for puzzles without cheater squares (see the prompt)
 * Not all columns are valid in all positions, so there are only 26^3 * 797^4 * 33 ~ 10^17 options to consider. 
 * Creating the column sets reduced the number checked to about 10^11 and writing them to disk allowed for some parallel processing of the last step.
 
-## Results 
-TBD
+## Results - Puzzles Without Cheaters
+
+| Size      | Number Checked    |Valid Puzzles    |
+| :---           |          ---: |---: |
+| 7       |  12   | 10 |
+| 9        | 1,194    | 332 |
+| 11         |  155,272   | 27,248|
+| 13      |     59,747,417  | 11,582,715|
+| 15      |    318,698,842,925    |   12,168,009,847  |
