@@ -14,19 +14,22 @@ This is an attempted solution to the problem posed [on the 538 Riddler](https://
 >
 > Extra credit: The Sunday “New York Times” puzzle is 21-by-21. How many of those are there, with and without cheater squares?
 
-Note: The approach below finds puzzles without cheater squares only. In addition, the definition for a cheater square has to be modified slightly to fit the algorithm below. When 4 blocks are arranged like a capital T, the block in the middle would be considered a cheat because its Removal doesn't change the word count but does result in an invalid puzzle. 
+The approach below finds puzzles without cheater squares only. For clarity, I treat any set of three blocks in an L as having a cheater square. This extends to T and + shapes. In addition, any block in the corner or sequential blocks along the edge qualify as cheaters.
 
 ## Approach
 
 Find Columns
 1. Find all the valid columns that can exist with at least one word and all words 3 letters or longer. 
 2. Determine which columns can be placed in the first three columns OR in the middle column. 
-3. Find parent/child relationships between each allowed column. A child would be identical to a parent column, but with one extra black square. While multiple valid parents exist for many columns, only one was chosen. This was done because a child column is only ever valid if a parent column is valid in the same position. Columns were grouped by 'order' which is the number of black squares. 
+3. Check each column against every other column and determine which cannot be neighbors, because they create cheater squares. 
+
+Find Column Sets. 
+1. In the 15x15 grid. Find each set of 5 columns that can be in columns 1 to 5 and find the sets of 4 columns that can populate columns 5 to 8. 
+2. Check each set for words less than 3 characters. 
+3. Write the column sets to disk, grouped based on column 5 which overlaps both sets.
 
 Find Puzzles
-1. Find all puzzles which are made up of order 1 or blank columns in all positions. In the 15x15 puzzle, there are 124 million of these. 
-2. Check the set of order 1 columns by starting with a blank puzzle, and 'slicing' the search space by searching left to right: Select a column for the first unfilled position from the order one columns or use a blank. Check the validity of the puzzle with this choice. If it is invalid, move on to the next choice for that column, otherwise move to the next column. Repeat for each column, finding each valid order 1 puzzle. 
-3. Any time a valid order 1 puzzle is found, find every child puzzle comprised of the current order 1 columns or their order 2 children. For every valid puzzle repeat with by substituting each order 2 column for its children in turn. Repeat for all possible children.
+1. For each sets of columns, test every combination of Left and Center column sets. 
 
 Validate Puzzles - Puzzles are checked with three tests, run in order from fastest to slowest. Stopping after the first failure. 
 1. Every row must be in the valid column list, and must be valid for its position. 
@@ -39,8 +42,7 @@ This solution searches only for puzzles without cheater squares (see the prompt)
 * For the 15x15, given the rotational symmetry, there are 113 squares to fill or about 10^35 choices. 
 * Of the 2^ 15 = 32768 possible columns, only 797 are valid. Choosing 8 of these gives 10^23 choices.
 * Not all columns are valid in all positions, so there are only 26^3 * 797^4 * 33 ~ 10^17 options to consider. 
-* If we consider only the possible order 1 puzzles (columns with no more than 1 black) as a starting point, there are about 124 million to start with. Of these, we can skip more than 90% through the 'slices' taken of the possible order 1 puzzle space. 
-* Iterating through the child columns prevents checking anything twice and allows stopping as soon as an invalid puzzle is found.
+* Creating the column sets reduced the number checked to about 10^11 and writing them to disk allowed for some parallel processing of the last step.
 
 ## Results 
 TBD
