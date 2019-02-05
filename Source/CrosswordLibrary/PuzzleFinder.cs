@@ -45,7 +45,7 @@ namespace CrosswordLibrary
                     File.Create($"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.inprocess");
                     var stats = FindPuzzels(pc, validColumns, leftFile, cntrFiles.Where(x => Path.GetFileName(x) == Path.GetFileName(leftFile)).First(), validDir);
                     Console.WriteLine($"Done With {Path.GetFileName(leftFile)}. File {i} of {leftFiles.Count()}");
-                    stats.Seconds = (DateTime.Now - StartTime).TotalSeconds;
+                    stats.Seconds = (DateTime.Now - start).TotalSeconds;
                     File.WriteAllText($"{validDir}\\{Path.GetFileNameWithoutExtension(leftFile)}.json", JsonConvert.SerializeObject(stats, Formatting.Indented));
                     LogStatus(pc);
                 }
