@@ -49,7 +49,7 @@ This solution searches only for puzzles without cheater squares (see the prompt)
 | Size   | Number Checked      |Valid Puzzles      | Puzzle Images                                        |
 | :---   |          ---:       |---:               | ---:                                                 |
 | 7      |  12                 | 10                | [All Size 7 Puzzles](/Results/07/All/SVGs/SVGs.MD)   |
-| 9      | 1,194               | 332               | [All Size 9 Puzzles](/Results/07/All/SVGs/SVGs.MD)   |
-| 11     |  155,272            | 27,248            | [Some Size 11 Puzzles](/Results/07/All/SVGs/SVGs.MD) |
-| 13     |     59,747,417      | 11,582,715        | [Some Size 13 Puzzles](/Results/07/All/SVGs/SVGs.MD) |
-| 15     |    318,698,842,925  |   12,168,009,847  | [Some Size 15 Puzzles](/Results/07/All/SVGs/SVGs.MD) |
+| 9      | 1,194               | 332               | [All Size 9 Puzzles](/Results/09/All/SVGs/SVGs.MD)   |
+| 11     |  155,272            | 27,248            | [Some Size 11 Puzzles](/Results/11/All/SVGs/SVGs.MD) |
+| 13     |     59,747,417      | 11,582,715        | [Some Size 13 Puzzles](/Results/13/All/SVGs/SVGs.MD) |
+| 15     |    318,698,842,925  |   12,168,009,847  | [Some Size 15 Puzzles](/Results/15/All/SVGs/SVGs.MD) |
